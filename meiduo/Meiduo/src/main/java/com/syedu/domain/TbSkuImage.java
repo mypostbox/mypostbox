@@ -1,0 +1,18 @@
+package com.syedu.domain;
+
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+/**
+ * author:Administrator
+ * createTime:2023/6/89:15
+ */
+@Data
+public class TbSkuImage {
+    private Integer id;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+    private String image;
+    private Integer skuId;
+}
