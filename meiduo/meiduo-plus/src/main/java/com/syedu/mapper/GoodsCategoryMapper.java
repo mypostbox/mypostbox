@@ -26,9 +26,16 @@ public interface GoodsCategoryMapper extends BaseMapper<GoodsCategory> {
                     many = @Many(select = "com.syedu.mapper.GoodsCategoryMapper.findAllByParentId",
                             fetchType = FetchType.EAGER))
     })
-    List<GoodsCategory> findAllById(@Param("id") Integer id);
+    GoodsCategory findAllByIdWithChild(@Param("id") Integer id);
+
+    @Select("select * from tb_goods_category where id = #{id}")
+    GoodsCategory findAllById(@Param("id") Integer id);
 
 
+    /**
+     * 已更新弃用!!!!
+     * @return
+     */
     @Select("select id,create_time,update_time,name,parent_id from tb_goods_category where parent_id is null")
     @Results({
             @Result(property = "id", column = "id"),

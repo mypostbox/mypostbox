@@ -55,17 +55,20 @@ public class Spu implements Serializable {
      * 
      */
     private Integer category1Id;
-
+    @TableField(exist = false)
+    private GoodsCategory category1;
     /**
      * 
      */
     private Integer category2Id;
-
+    @TableField(exist = false)
+    private GoodsCategory category2;
     /**
      * 
      */
     private Integer category3Id;
-
+    @TableField(exist = false)
+    private GoodsCategory category3;
     /**
      * 
      */

@@ -3,6 +3,9 @@ package com.syedu.service;
 import com.syedu.domain.ChannelGroup;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
 * @author Administrator
 * @description 针对表【tb_channel_group】的数据库操作Service
@@ -10,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ChannelGroupService extends IService<ChannelGroup> {
 
+    List<ChannelGroup> indexService();
 }

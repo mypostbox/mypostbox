@@ -26,4 +26,10 @@ public class GoodsCategoryMapperTest {
         allByParentIdIsNull.stream().forEach(System.out::println);
     }
 
+    @Test
+    public void test1(){
+        GoodsCategory allById = this.goodsCategoryMapper.findAllById(1);
+        System.out.println(allById);
+    }
+
 }

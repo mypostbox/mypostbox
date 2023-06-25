@@ -23,8 +23,8 @@ public interface GoodsChannelMapper extends BaseMapper<GoodsChannel> {
             @Result(property = "url",column = "url"),
             @Result(property = "groupId",column = "group_id"),
             @Result(property = "categoryId",column = "category_id"),
-            @Result(property = "goodsCategory",column = "group_id",
-                    one = @One(select = "com.syedu.mapper.GoodsCategoryMapper.findAllById")),
+            @Result(property = "goodsCategory",column = "category_id",
+                    one = @One(select = "com.syedu.mapper.GoodsCategoryMapper.findAllByIdWithChild")),
     })
     List<GoodsChannel> findAllByGroupId(@Param("id") Integer id);
 

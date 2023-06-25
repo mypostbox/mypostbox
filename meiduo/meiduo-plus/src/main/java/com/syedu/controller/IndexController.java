@@ -7,12 +7,14 @@ import com.syedu.domain.ContentCategory;
 import com.syedu.domain.GoodsCategory;
 import com.syedu.mapper.ChannelGroupMapper;
 import com.syedu.mapper.ContentCategoryMapper;
+import com.syedu.service.ChannelGroupService;
 import com.syedu.service.GoodsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:Administrator
@@ -26,7 +28,7 @@ public class IndexController {
     @Autowired
     private GoodsCategoryService goodsCategoryService;
     @Autowired
-    private ChannelGroupMapper channelGroupMapper;
+    private ChannelGroupService channelGroupService;
 
     /**
      * 主页数据
@@ -38,17 +40,19 @@ public class IndexController {
     }
 
     /**
-     * 三级目录数据
+     * 三级目录数据  淘汰!!!
+     * @return
+     */
+    public List<List<GoodsCategory>> menuServices() {
+        return this.goodsCategoryService.menuService();
+    }
+    /**
+     * 三级目录数据优化
      * @return
      */
     @GetMapping("menu")
-    public List<List<GoodsCategory>> menuService() {
-        return this.goodsCategoryService.menuService();
-    }
-
-    @GetMapping("test")
-    public List<ChannelGroup> menuTest(){
-        return this.channelGroupMapper.findAllBy();
+    public List<ChannelGroup> menuService(){
+      return this.channelGroupService.indexService();
     }
 
 
