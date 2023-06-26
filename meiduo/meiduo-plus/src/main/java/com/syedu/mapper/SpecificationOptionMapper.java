@@ -16,8 +16,8 @@ public interface SpecificationOptionMapper extends BaseMapper<SpecificationOptio
 
 
 
-    @Select("select * from tb_specification_option where spec_id = #{sprcId}")
-    List<SpecificationOption> findAllBySpecId(Integer sprcId);
+    @Select("select * from tb_specification_option where spec_id = #{specId}")
+    List<SpecificationOption> findAllBySpecId(Integer specId);
 }
 
 

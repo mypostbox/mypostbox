@@ -9,6 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:Administrator
@@ -22,8 +23,6 @@ public class GoodsCategoryServiceTest {
 
     @Test
     public void test() {
-        List<List<GoodsCategory>> lists = this.goodsCategoryService.menuService();
-        lists.stream().forEach(System.out::println);
     }
 
 
@@ -49,5 +48,11 @@ public class GoodsCategoryServiceTest {
 
         lists.stream().forEach(System.out::println);
 
+    }
+
+    @Test
+    public void test2(){
+        Map<String, Object> stringObjectMap = this.goodsCategoryService.listService(115);
+        System.out.println(stringObjectMap);
     }
 }

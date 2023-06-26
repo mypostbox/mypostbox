@@ -47,17 +47,15 @@ public class SkuSpecification implements Serializable {
      * 
      */
     private Integer specId;
-    /**
-     *
-     */
-    private String specName;
+
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     /**
-     * 具体详选项
+     * 选项种类
      */
     @TableField(exist = false)
-    private List<SpecificationOption> specificationOptions;
+    private SpuSpecification spuSpecifications;
+
 }

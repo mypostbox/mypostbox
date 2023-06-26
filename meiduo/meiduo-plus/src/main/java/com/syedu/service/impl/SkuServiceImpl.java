@@ -1,5 +1,7 @@
 package com.syedu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.syedu.domain.Sku;
 import com.syedu.domain.Users;
@@ -85,6 +87,18 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
 
 
         return sku;
+    }
+
+    @Override
+    public Map<String, Object> listService(Integer goodsCategoryId) {
+        HashMap<String, Object> map = new HashMap<>();
+        LambdaQueryWrapper<Sku> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Sku::getCategoryId,goodsCategoryId);
+        List<Sku> skus = this.skuMapper.selectList(wrapper);
+        skus.stream().forEach(System.out::println);
+        map.put("count",skus.size());
+        map.put("results",skus);
+        return map;
     }
 
 

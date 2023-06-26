@@ -1,5 +1,6 @@
 package com.syedu.service;
 
+import com.syedu.domain.Sku;
 import com.syedu.domain.SkuSpecification;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-13 08:45:37
 */
 public interface SkuSpecificationService extends IService<SkuSpecification> {
-
+    //根据optionId找到sku
+    Sku detailToggleService(String arr);
 }

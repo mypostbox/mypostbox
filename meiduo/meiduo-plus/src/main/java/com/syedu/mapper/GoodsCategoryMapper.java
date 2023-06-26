@@ -28,27 +28,6 @@ public interface GoodsCategoryMapper extends BaseMapper<GoodsCategory> {
     })
     GoodsCategory findAllByIdWithChild(@Param("id") Integer id);
 
-    @Select("select * from tb_goods_category where id = #{id}")
-    GoodsCategory findAllById(@Param("id") Integer id);
-
-
-    /**
-     * 已更新弃用!!!!
-     * @return
-     */
-    @Select("select id,create_time,update_time,name,parent_id from tb_goods_category where parent_id is null")
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "createTime", column = "create_time"),
-            @Result(property = "updateTime", column = "update_time"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "parentId", column = "parent_id"),
-            @Result(property = "child", column = "id",
-                    many = @Many(select = "com.syedu.mapper.GoodsCategoryMapper.findAllByParentId",
-                            fetchType = FetchType.EAGER))
-    })
-    List<GoodsCategory> findAllByParentIdIsNull();
-
     @Select("select  id,create_time,update_time,name,parent_id from tb_goods_category where parent_id = #{parentId}")
     @Results({
             @Result(property = "id", column = "id"),
@@ -61,6 +40,10 @@ public interface GoodsCategoryMapper extends BaseMapper<GoodsCategory> {
                             fetchType = FetchType.EAGER))
     })
     List<GoodsCategory> findAllByParentId(@Param(value = "parentId") Integer parentId);
+
+
+    @Select("select * from tb_goods_category where id = #{id}")
+    GoodsCategory findAllById(@Param("id") Integer id);
 
 }
 

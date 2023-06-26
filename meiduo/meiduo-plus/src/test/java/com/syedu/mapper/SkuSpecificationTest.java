@@ -1,5 +1,7 @@
 package com.syedu.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syedu.domain.SkuSpecification;
 import com.syedu.utils.config.SpringConfiguration;
 import org.junit.jupiter.api.Test;
@@ -19,8 +21,10 @@ public class SkuSpecificationTest {
     private SkuSpecificationMapper mapper;
 
     @Test
-    public void test(){
-        List<SkuSpecification> allBySkuIdWithOption = this.mapper.findAllBySkuIdWithOption(1);
-        allBySkuIdWithOption.stream().forEach(System.out::println);
+    public void test() throws JsonProcessingException {
+        List<SkuSpecification> allBySkuId = this.mapper.findAllBySkuId(1);
+        ObjectMapper mapper1 = new ObjectMapper();
+        String s = mapper1.writeValueAsString(allBySkuId);
+        System.out.println(s);
     }
 }

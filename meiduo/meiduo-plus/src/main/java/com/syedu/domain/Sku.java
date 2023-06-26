@@ -105,10 +105,19 @@ public class Sku implements Serializable {
      */
     @TableField(exist = false)
     private Boolean selected;
-
     /**
-     * 商品的详细分类表
+     * 图片
      */
     @TableField(exist = false)
-    private List<SkuSpecification> specifications;
+    private List<SkuImage> skuImages;
+    /**
+     * 商品中间表
+     */
+    @TableField(exist = false)
+    private List<SkuSpecification> skuSpecifications;
+    /**
+     * spu信息
+     */
+    @TableField(exist = false)
+    private Spu spu;
 }

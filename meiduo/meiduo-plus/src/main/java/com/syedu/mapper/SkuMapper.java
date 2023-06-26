@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
+import java.util.List;
+
 /**
 * @author Administrator
 * @description 针对表【tb_sku】的数据库操作Mapper
@@ -12,7 +14,11 @@ import org.apache.ibatis.mapping.FetchType;
 * @Entity com.syedu.domain.Sku
 */
 public interface SkuMapper extends BaseMapper<Sku> {
-
+    /**
+     * 根据sku_id拿出detail的所有数据
+     * @param sku_id
+     * @return
+     */
     @Select("select id , create_time,update_time,name,caption,price,cost_price,market_price,stock,sales,comments,is_launched,category_id,spu_id,default_image from tb_sku where id = #{id} ")
     @Results({
             @Result(property = "id",column = "id"),
@@ -29,11 +35,17 @@ public interface SkuMapper extends BaseMapper<Sku> {
             @Result(property = "categoryId",column = "category_id"),
             @Result(property = "spuId",column = "spu_id"),
             @Result(property = "defaultImage",column = "default_image"),
-            @Result(property = "specifications" ,column = "id",
-                    many = @Many(select = "com.syedu.mapper.SkuSpecificationMapper.findAllBySkuIdWithOption"))
+            //封装图片信息
+            @Result(property = "skuImages" , column = "id" ,
+                    many = @Many(select = "com.syedu.mapper.SkuImageMapper.findAllBySkuId")),
+            //商品中间表
+            @Result(property = "skuSpecifications" ,column = "id" ,
+                    many = @Many(select = "com.syedu.mapper.SkuSpecificationMapper.findAllBySkuId")),
+            //spu表信息
+            @Result(property = "spu" , column = "spu_id" ,
+                    one = @One(select = "com.syedu.mapper.SpuMapper.findAllById")),
     })
     Sku findAllByIdWithSpecificationAndOption(@Param("id") Integer sku_id);
-
 }
 
 

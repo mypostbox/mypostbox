@@ -2,10 +2,11 @@ package com.syedu.controller;
 
 import com.syedu.domain.Sku;
 import com.syedu.mapper.SkuMapper;
+import com.syedu.service.SkuSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+
 
 /**
  * author:Administrator
@@ -16,11 +17,20 @@ public class DetailController {
 
     @Autowired
     private SkuMapper skuMapper;
-
+    @Autowired
+    private SkuSpecificationService skuSpecificationService;
+    //初始化加载detail数据
     @GetMapping("detail/{id}")
-    public Sku test(@PathVariable("id") Integer id){
+    public Sku detailService(@PathVariable("id") Integer id){
         return this.skuMapper.findAllByIdWithSpecificationAndOption(id);
     }
-
+    //切换detail数据
+    @GetMapping("toggle/{arr}")
+    public Sku toggleService(@PathVariable("arr") String arr){
+        System.out.println(arr);
+        Sku sku = this.skuSpecificationService.detailToggleService(arr);
+        if(sku == null) return null;
+        return sku;
+    }
 
 }

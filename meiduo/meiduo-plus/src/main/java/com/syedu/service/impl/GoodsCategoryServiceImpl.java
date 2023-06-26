@@ -1,6 +1,7 @@
 package com.syedu.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.syedu.domain.GoodsCategory;
 
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,40 +25,22 @@ import java.util.stream.Stream;
 @Service
 public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, GoodsCategory>
         implements GoodsCategoryService {
-
     @Autowired
     private GoodsCategoryMapper goodsCategoryMapper;
-
     @Override
-    public List<List<GoodsCategory>>
-    menuService() {
-        List<List<GoodsCategory>> list = new ArrayList<>();
-        List<GoodsCategory> allByParentIdIsNull = this.goodsCategoryMapper.findAllByParentIdIsNull();
-        ArrayList<GoodsCategory> goodsCategories = new ArrayList<>();
-        for (int i = 0; i < allByParentIdIsNull.size(); i++) {
-            goodsCategories.add(allByParentIdIsNull.get(i));
-            if (goodsCategories.size() == 4 && i < 20) {
-                list.add(goodsCategories);
-                goodsCategories = new ArrayList<>();
-            }
-            if (goodsCategories.size() == 3 && i > 20) {
-                list.add(goodsCategories);
-                goodsCategories = new ArrayList<>();
-            }
-        }
-        if (goodsCategories.size() > 0) {
-            list.add(goodsCategories);
-        }
-        for (int i = 0; i < list.size(); i++) {
-            List<GoodsCategory> goodsCategories1 = list.get(i);
-            for (int y = 1; y < goodsCategories1.size(); y++) {
-                GoodsCategory goodsCategory = goodsCategories1.get(0);
-                List<GoodsCategory> child = goodsCategory.getChild();
-                List<GoodsCategory> child1 = goodsCategories1.get(y).getChild();
-                goodsCategory.setChild(Stream.concat(child.stream(), child1.stream()).collect(Collectors.toList()));
-            }
-        }
-        return list;
+    public Map<String, Object> listService(Integer goodsCategoryId) {
+        Map<String,Object> map = new HashMap<>();
+        GoodsCategory allById = this.goodsCategoryMapper.findAllById(goodsCategoryId);
+        map.put("cat3",allById);
+        LambdaQueryWrapper<GoodsCategory> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(GoodsCategory::getId,allById.getParentId());
+        GoodsCategory goodsCategory = this.goodsCategoryMapper.selectOne(wrapper);
+        map.put("cat2",goodsCategory);
+        wrapper.clear();
+        wrapper.eq(GoodsCategory::getId,goodsCategory.getParentId());
+        GoodsCategory goodsCategory1 = this.goodsCategoryMapper.selectOne(wrapper);
+        map.put("cat1",goodsCategory1);
+        return map;
     }
 }
 

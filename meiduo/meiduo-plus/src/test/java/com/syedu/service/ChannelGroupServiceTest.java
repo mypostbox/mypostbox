@@ -1,37 +1,27 @@
 package com.syedu.service;
 
-import com.syedu.domain.Sku;
+import com.syedu.domain.ChannelGroup;
 import com.syedu.utils.config.SpringConfiguration;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * author:Administrator
- * createTime:2023/6/2011:29
+ * createTime:2023/6/2415:52
  */
 @SpringJUnitConfig(classes = {SpringConfiguration.class})
-public class SkuServiceTest {
-
-
+public class ChannelGroupServiceTest {
 
     @Autowired
-    private SkuService skuService;
+    private ChannelGroupService channelGroupService;
 
 
     @Test
     public void test(){
-        Sku skuDetailById = this.skuService.findSkuDetailById(1);
-        System.out.println(skuDetailById);
-    }
-
-    @Test
-    public void test1(){
-        Map<String, Object> stringObjectMap = this.skuService.listService(115);
 
     }
-
 }

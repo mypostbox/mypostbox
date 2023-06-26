@@ -2,6 +2,10 @@ package com.syedu.mapper;
 
 import com.syedu.domain.Brand;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,7 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.syedu.domain.Brand
 */
 public interface BrandMapper extends BaseMapper<Brand> {
-
+    @Select("select * from tb_brand where id = #{id}")
+    List<Brand> findAllById(@Param("id") Integer id);
 }
 
 

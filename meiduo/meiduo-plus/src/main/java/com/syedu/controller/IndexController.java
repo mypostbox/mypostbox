@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * author:Administrator
@@ -25,8 +25,6 @@ public class IndexController {
 
     @Autowired
     private ContentCategoryMapper contentCategoryMapper;
-    @Autowired
-    private GoodsCategoryService goodsCategoryService;
     @Autowired
     private ChannelGroupService channelGroupService;
 
@@ -39,13 +37,6 @@ public class IndexController {
         return this.contentCategoryMapper.findFloor1();
     }
 
-    /**
-     * 三级目录数据  淘汰!!!
-     * @return
-     */
-    public List<List<GoodsCategory>> menuServices() {
-        return this.goodsCategoryService.menuService();
-    }
     /**
      * 三级目录数据优化
      * @return

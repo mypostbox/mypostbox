@@ -3,7 +3,7 @@ package com.syedu.service;
 import com.syedu.domain.GoodsCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -11,6 +11,10 @@ import java.util.List;
 * @createDate 2023-06-13 08:45:37
 */
 public interface GoodsCategoryService extends IService<GoodsCategory> {
-
-    List<List<GoodsCategory>> menuService();
+    /**
+     * 根据三级id查出三层数据
+     * @param goodsCategoryId
+     * @return
+     */
+    Map<String,Object> listService(Integer goodsCategoryId);
 }

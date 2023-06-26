@@ -20,4 +20,7 @@ public interface SkuService extends IService<Sku> {
     Integer updateCart(String token,String skuId,String count) throws Exception;
 
     Sku findSkuDetailById(Integer id);
+
+    //list数据
+    Map<String,Object> listService(Integer goodsCategoryId);
 }

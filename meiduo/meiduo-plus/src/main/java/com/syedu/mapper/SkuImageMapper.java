@@ -2,6 +2,10 @@ package com.syedu.mapper;
 
 import com.syedu.domain.SkuImage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -11,6 +15,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface SkuImageMapper extends BaseMapper<SkuImage> {
 
+    @Select("select * from tb_sku_image where sku_id = #{skuId}")
+    List<SkuImage> findAllBySkuId(@Param("skuId") Integer skuId);
 }
 
 

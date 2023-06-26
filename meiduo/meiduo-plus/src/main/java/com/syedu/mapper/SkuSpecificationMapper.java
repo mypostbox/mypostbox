@@ -11,22 +11,19 @@ import java.util.List;
  * @description 针对表【tb_sku_specification】的数据库操作Mapper
  * @createDate 2023-06-13 08:45:37
  * @Entity com.syedu.domain.SkuSpecification
+ * 中间表
  */
 public interface SkuSpecificationMapper extends BaseMapper<SkuSpecification> {
 
-    @Select("select id,create_time,update_time,option_id,sku_id,spec_id,spec_name from tb_sku_specification where sku_id = #{skuId}")
+    @Select("select * from tb_sku_specification where sku_id = #{skuId}")
     @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "createTime", column = "create_time"),
-            @Result(property = "updateTime", column = "update_time"),
-            @Result(property = "optionId", column = "option_id"),
-            @Result(property = "skuId", column = "sku_id"),
-            @Result(property = "specId", column = "spec_id"),
-            @Result(property = "specName" ,column = "spec_name"),
-            @Result(property = "specificationOptions", column = "spec_id",
-                    many = @Many(select = "com.syedu.mapper.SpecificationOptionMapper.findAllBySpecId")),
+            @Result(property = "spuSpecifications" , column = "spec_id",
+                    many = @Many(select = "com.syedu.mapper.SpuSpecificationMapper.findAllByIdWithOption")),
     })
-    List<SkuSpecification> findAllBySkuIdWithOption(@Param("skuId") Integer skuId);
+    List<SkuSpecification> findAllBySkuId(@Param("skuId") Integer skuId);
+
+    @Select("select * from tb_sku_specification where option_id = #{optionId}")
+    List<SkuSpecification> findAllByOptionId(@Param("optionId") Integer optionId);
 }
 
 
