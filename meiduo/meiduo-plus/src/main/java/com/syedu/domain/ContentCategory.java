@@ -59,4 +59,6 @@ public class ContentCategory implements Serializable {
      */
     @TableField(exist = false)
     private List<Content> contents;
+
+
 }

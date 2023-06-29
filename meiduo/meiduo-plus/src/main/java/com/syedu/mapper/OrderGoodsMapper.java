@@ -2,6 +2,9 @@ package com.syedu.mapper;
 
 import com.syedu.domain.OrderGoods;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -11,6 +14,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface OrderGoodsMapper extends BaseMapper<OrderGoods> {
 
+    @Select("select * from tb_order_goods where order_id = #{orderId}")
+    @Results({
+            @Result(property = "sku" , column = "sku_id" ,
+                    one = @One(select = "com.syedu.mapper.SkuMapper.findAllByIdSku"))
+    })
+    List<OrderGoods> findAllByOrderId(@Param("orderId") String orderId);
 }
 
 

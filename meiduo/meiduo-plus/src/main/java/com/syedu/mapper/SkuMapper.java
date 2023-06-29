@@ -46,6 +46,8 @@ public interface SkuMapper extends BaseMapper<Sku> {
                     one = @One(select = "com.syedu.mapper.SpuMapper.findAllById")),
     })
     Sku findAllByIdWithSpecificationAndOption(@Param("id") Integer sku_id);
+    @Select("select * from tb_sku where id = #{id}")
+    Sku findAllByIdSku(@Param("id") Integer id);
 }
 
 

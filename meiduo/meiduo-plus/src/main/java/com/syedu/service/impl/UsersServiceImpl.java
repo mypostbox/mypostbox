@@ -9,8 +9,10 @@ import com.syedu.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.syedu.utils.keyword.JwtUtils;
+import redis.clients.jedis.Jedis;
 
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Date;
 
 /**
@@ -24,8 +26,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     @Autowired
     private PrivateKey privateKey;
+
     @Autowired
     private UsersMapper usersMapper;
+
+    @Autowired
+    private PublicKey publicKey;
+
 
     /**
      * 根据用户和密码校验用户是否存在
@@ -68,6 +75,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         return users;
     }
 
+    //获取用户的详细信息
+    @Override
+    public Users findAllUsers(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token,this.publicKey);
+        return this.usersMapper.selectById(user.getId());
+    }
 
     /**
      * 此方法已改，无法在使用，只做浏览

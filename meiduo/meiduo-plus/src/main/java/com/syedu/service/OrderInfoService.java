@@ -2,6 +2,10 @@ package com.syedu.service;
 
 import com.syedu.domain.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.syedu.mapper.OrderInfoMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -10,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface OrderInfoService extends IService<OrderInfo> {
 
+    Map<String,Object> findAllOrderInfoByUserId(String token, Map<String,Object> map) throws Exception;
 }

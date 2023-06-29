@@ -2,10 +2,12 @@ package com.syedu.controller;
 
 import com.syedu.domain.Sku;
 import com.syedu.mapper.SkuMapper;
+import com.syedu.service.SkuService;
 import com.syedu.service.SkuSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 /**
@@ -19,6 +21,8 @@ public class DetailController {
     private SkuMapper skuMapper;
     @Autowired
     private SkuSpecificationService skuSpecificationService;
+    @Autowired
+    private SkuService skuService;
     //初始化加载detail数据
     @GetMapping("detail/{id}")
     public Sku detailService(@PathVariable("id") Integer id){
@@ -31,6 +35,11 @@ public class DetailController {
         Sku sku = this.skuSpecificationService.detailToggleService(arr);
         if(sku == null) return null;
         return sku;
+    }
+
+    @GetMapping("/sku/hot/")
+    public List<Sku> findHot(){
+        return this.skuService.fundHot();
     }
 
 }

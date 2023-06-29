@@ -7,7 +7,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -15,6 +19,9 @@ import lombok.Data;
  */
 @TableName(value ="tb_order_goods")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
 public class OrderGoods implements Serializable {
     /**
      * 
@@ -40,7 +47,7 @@ public class OrderGoods implements Serializable {
     /**
      * 
      */
-    private BigDecimal price;
+    private Double price;
 
     /**
      * 
@@ -74,4 +81,9 @@ public class OrderGoods implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+    /**
+     * 订单中的商品
+     */
+    @TableField(exist = false)
+    private Sku sku;
 }

@@ -15,4 +15,6 @@ public interface UsersService extends IService<Users> {
     Users checkUser(Users user) throws Exception;
 
     Users register(Users user) throws Exception;
+
+    Users findAllUsers(String token) throws Exception;
 }

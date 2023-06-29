@@ -40,17 +40,22 @@ public class CartController {
      */
     @DeleteMapping("cart")
     public Integer delCart(@RequestHeader("Authorization") String token,
-                           @RequestBody Map<String,Object> map) throws Exception {
-        return this.skuService.delCart(token, map.get("sku_id").toString());
+                           @RequestBody Map<String,Integer> map) throws Exception {
+        return this.skuService.delCart(token, map);
     }
-
     /**
      * 更新购物车商品的信息
      */
     @PutMapping("cart")
-    public  Integer updateCart(@RequestHeader("Authorization") String token,
-                               @RequestBody Map<String,Object> map)throws Exception{
-        return this.skuService.updateCart(token,map.get("sku_id").toString(),map.get("count").toString());
+    public  Sku updateCart(@RequestHeader("Authorization") String token,
+                           @RequestBody Map<String,Object > map)throws Exception{
+        return this.skuService.updateCart(token,map);
+    }
+
+    @PutMapping("cart/selection/")
+    public Boolean updateCart2(@RequestHeader("Authorization") String token,
+                              @RequestBody Map<String,Object> map) throws Exception {
+        return this.skuService.selectedAll(token,map);
     }
 
 }

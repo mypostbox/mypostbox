@@ -2,13 +2,17 @@ package com.syedu.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.syedu.domain.Sku;
 import com.syedu.domain.Users;
 import com.syedu.mapper.UsersMapper;
+import com.syedu.service.SkuService;
 import com.syedu.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 /**
  * author:Administrator
@@ -20,7 +24,8 @@ public class UsersController {
     private UsersService usersService;
     @Autowired
     private UsersMapper usersMapper;
-
+    @Autowired
+    private SkuService skuService;
 
     /**
      * 用户登入
@@ -86,5 +91,21 @@ public class UsersController {
     }
 
 
+    //保存用户浏览记录
+    @PostMapping("browse_histories")
+    public void browseHistories1(@RequestBody Map<String,Integer> map,
+                                @RequestHeader("Authorization") String token) throws Exception {
+      this.skuService.browseHistories1(map.get("sku_id"),token);
+    }
+    //获取用户的浏览记录
+    @GetMapping("browse_histories")
+    public List<Sku> browseHistories2(@RequestHeader("Authorization") String token) throws Exception{
+       return this.skuService.browseHistories2(token);
+    }
+    //获取用户的详细信息
+    @GetMapping("user")
+    public Users findAllUsers(@RequestHeader("Authorization") String token) throws Exception {
+       return this.usersService.findAllUsers(token);
+    }
 
 }

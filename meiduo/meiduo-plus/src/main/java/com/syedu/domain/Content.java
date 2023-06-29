@@ -71,7 +71,7 @@ public class Content implements Serializable {
     /**
      * 
      */
-    private Integer skuCategoryId;
+    private Integer goodsCategoryId;
 
     /**
      *

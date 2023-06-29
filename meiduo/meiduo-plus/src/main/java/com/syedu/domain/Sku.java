@@ -104,7 +104,7 @@ public class Sku implements Serializable {
      * 购物车商品下拉框是否全选
      */
     @TableField(exist = false)
-    private Boolean selected;
+    private boolean selected = true;
     /**
      * 图片
      */

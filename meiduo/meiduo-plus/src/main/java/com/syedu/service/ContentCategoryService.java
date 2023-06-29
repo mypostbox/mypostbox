@@ -6,6 +6,7 @@ import com.syedu.mapper.ContentCategoryMapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -14,7 +15,5 @@ import java.util.List;
 */
 public interface ContentCategoryService extends IService<ContentCategory> {
 
-
-    List<ContentCategory> indexService();
-
+    Map<String,Object> indexService();
 }
