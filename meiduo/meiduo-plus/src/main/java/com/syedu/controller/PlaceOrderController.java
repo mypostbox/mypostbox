@@ -25,6 +25,14 @@ public class PlaceOrderController {
     public Map<String,Object> findAllAddresses(@RequestHeader("Authorization") String token) throws Exception {
         return this.addressService.findAllAddress(token);
     }
+    /**
+     * 设置默认地址
+     */
+    @PutMapping("addresses/{addressId}/status")
+    public Integer addressStatus(@RequestHeader("Authorization") String token,
+                                 @PathVariable("addressId") Integer addressId) throws Exception {
+        return this.addressService.addressStatus(token,addressId);
+    }
     //获取用户商品信息
     @GetMapping("orders/settlement")
     public Map<String,Object> findAllSku(@RequestHeader("Authorization") String token) throws Exception{

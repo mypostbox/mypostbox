@@ -115,12 +115,12 @@
             <artifactId>jedis</artifactId>
             <version>4.4.1</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-core &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.aliyun</groupId>-->
-<!--            <artifactId>aliyun-java-sdk-core</artifactId>-->
-<!--            <version>4.5.30</version>-->
-<!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.35.79.ALL</version>
+        </dependency>
 
     </dependencies>
 

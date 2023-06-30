@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,17 +29,15 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Autowired
     private OrderInfoMapper orderInfoMapper;
     @Override
-    public Map<String, Object> findAllOrderInfoByUserId(String token, Map<String, Object> map) throws Exception {
+    public Map<String, Object> findAllOrderInfoByUserId(String token, Integer page,Integer pageSize) throws Exception {
         Map<String,Object> maps = new HashMap<>();
-        Page<OrderInfo> page = new Page<>(Integer.parseInt(map.get("page").toString()),Integer.parseInt(map.get("page_size").toString()));
         Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        List<OrderInfo> orderInfos = this.orderInfoMapper.findAllByUserIdWithOrderGoodsAndSku((page - 1) * pageSize, pageSize, user.getId());
+        maps.put("results",orderInfos);
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderInfo::getUserId,user.getId());
-        this.orderInfoMapper.selectPage(page,wrapper);
-
-        maps.put("count",page.getTotal());
-        maps.put("results",page.getRecords());
-        return map;
+        maps.put("count",this.orderInfoMapper.selectCount(wrapper));
+        return maps;
     }
 }
 

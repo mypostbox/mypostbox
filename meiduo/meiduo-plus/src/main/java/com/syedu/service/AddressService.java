@@ -13,4 +13,6 @@ import java.util.Map;
 public interface AddressService extends IService<Address> {
 
     Map<String,Object> findAllAddress(String token) throws Exception;
+
+    Integer addressStatus(String token,Integer addressId) throws Exception;
 }

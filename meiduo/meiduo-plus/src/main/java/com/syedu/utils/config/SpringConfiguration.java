@@ -1,6 +1,9 @@
 package com.syedu.utils.config;
 
 
+import com.alipay.api.AlipayConfig;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.Signer;
 import com.syedu.utils.keyword.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +31,23 @@ public class SpringConfiguration {
     public PrivateKey privateKey() throws Exception {
         return RsaUtils.getPrivateKey1("pri_key");
     }
+
+//    @Bean
+//    public AlipayConfig alipayConfig(){
+//        AlipayConfig alipayConfig = new AlipayConfig();
+//        alipayConfig.setAppId("2021004103611012");
+//        alipayConfig.setPrivateKey();
+//        alipayConfig.setSignType();
+//        alipayConfig.set
+//    }
+
+//    @Bean
+//    public DefaultAlipayClient defaultAlipayClient(AlipayConfig alipayConfig){
+//        DefaultAlipayClient.Builder builder = new DefaultAlipayClient.Builder();
+//        DefaultAlipayClient build = builder.build();
+//        Signer signer = build.getSigner();
+//        signer.sign()
+//    }
 
 
 

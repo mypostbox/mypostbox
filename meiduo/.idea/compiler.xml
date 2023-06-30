@@ -8,9 +8,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="meiduo-plus" />
-        <module name="Meiduo" />
         <module name="has" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Meiduo" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

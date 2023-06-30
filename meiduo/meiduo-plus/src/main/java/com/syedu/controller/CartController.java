@@ -22,6 +22,7 @@ public class CartController {
 
     /**
      * 根据令牌获取用户购物车的信息
+     *
      * @param token
      * @return
      * @throws Exception
@@ -33,6 +34,7 @@ public class CartController {
 
     /**
      * 删除购物车的商品
+     *
      * @param token
      * @param map
      * @return
@@ -40,22 +42,37 @@ public class CartController {
      */
     @DeleteMapping("cart")
     public Integer delCart(@RequestHeader("Authorization") String token,
-                           @RequestBody Map<String,Integer> map) throws Exception {
+                           @RequestBody Map<String, Integer> map) throws Exception {
         return this.skuService.delCart(token, map);
     }
+
     /**
      * 更新购物车商品的信息
      */
     @PutMapping("cart")
-    public  Sku updateCart(@RequestHeader("Authorization") String token,
-                           @RequestBody Map<String,Object > map)throws Exception{
-        return this.skuService.updateCart(token,map);
+    public Sku updateCart(@RequestHeader("Authorization") String token,
+                          @RequestBody Map<String, Object> map) throws Exception {
+        return this.skuService.updateCart(token, map);
     }
 
+    @PutMapping("cart/add")
+    public Integer addCart(@RequestHeader("Authorization") String token,
+                        @RequestBody Map<String, Object> map) throws Exception {
+       return this.skuService.addCart(token, map);
+    }
+
+    /**
+     * //更新购物车商品的状态
+     *
+     * @param token
+     * @param map
+     * @return
+     * @throws Exception
+     */
     @PutMapping("cart/selection/")
     public Boolean updateCart2(@RequestHeader("Authorization") String token,
-                              @RequestBody Map<String,Object> map) throws Exception {
-        return this.skuService.selectedAll(token,map);
+                               @RequestBody Map<String, Object> map) throws Exception {
+        return this.skuService.selectedAll(token, map);
     }
 
 }

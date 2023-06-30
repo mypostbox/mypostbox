@@ -19,6 +19,8 @@ public interface SkuService extends IService<Sku> {
 
     Sku updateCart(String token,Map<String,Object> map) throws Exception;
 
+    Integer addCart(String token,Map<String,Object> map) throws Exception;
+
     Boolean selectedAll(String token,Map<String,Object> map) throws Exception;
 
 

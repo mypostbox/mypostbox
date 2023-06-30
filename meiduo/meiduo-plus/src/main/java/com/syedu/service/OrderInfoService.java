@@ -14,5 +14,5 @@ import java.util.Map;
 */
 public interface OrderInfoService extends IService<OrderInfo> {
 
-    Map<String,Object> findAllOrderInfoByUserId(String token, Map<String,Object> map) throws Exception;
+    Map<String,Object> findAllOrderInfoByUserId(String token, Integer page,Integer pageSize) throws Exception;
 }

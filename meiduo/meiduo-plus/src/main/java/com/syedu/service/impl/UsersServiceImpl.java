@@ -82,6 +82,24 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         return this.usersMapper.selectById(user.getId());
     }
 
+    @Override
+    public Integer modificationPassword(String token, String  password) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        Users users = this.usersMapper.selectById(user.getId());
+        users.setPassword(password);
+        return this.usersMapper.updateById(users);
+    }
+
+    @Override
+    public Boolean checkPassword(String token, String password) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        Users users = this.usersMapper.selectById(user.getId());
+        if(users.getPassword().equals(password)){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 此方法已改，无法在使用，只做浏览
      * @param user

@@ -91,9 +91,34 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
         Sku sku = this.skuMapper.selectById(skuId);
         sku.setSelected(selected);
         sku.setCount(count);
-        this.jedis.hset("cart" + user.getId(), skuId.toString(), count.toString() + ":" + selected);
+        this.jedis.hset("cart" + user.getId(), skuId.toString(), count + ":" + selected);
         this.jedis.close();
         return sku;
+    }
+
+    /**
+     * 添加购物车
+     * @param token
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer addCart(String token, Map<String, Object> map) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        Integer skuId = (Integer) map.get("sku_id");
+        Integer count = (Integer) map.get("count");
+        boolean selected = (Boolean) map.get("selected");
+        if(this.jedis.hexists("cart"+user.getId(),skuId.toString())){
+            String hget = this.jedis.hget("cart" + user.getId(), skuId.toString());
+            String[] split = hget.split(":");
+            count += Integer.parseInt(split[0]);
+            this.jedis.hset("cart" + user.getId(), skuId.toString(), count + ":" + selected);
+        }else{
+            this.jedis.hset("cart" + user.getId(), skuId.toString(), count + ":" + selected);
+        }
+        this.jedis.close();
+        return 200;
     }
 
     @Override

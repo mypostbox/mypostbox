@@ -42,8 +42,19 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
         List<Address> addresses = this.addressMapper.selectList(wrapper);
         map.put("addresses",addresses);
         map.put("default_address_id",users.getDefaultAddressId());
+        map.put("limit",8);
         return map;
     }
+
+    @Override
+    public Integer addressStatus(String token, Integer addressId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        Users users = this.usersMapper.selectById(user.getId());
+        users.setDefaultAddressId(addressId);
+        return this.usersMapper.updateById(users);
+    }
+
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.syedu.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syedu.domain.OrderInfo;
@@ -28,5 +29,13 @@ public class OrderInfoMapperTest {
         ObjectMapper mapper = new ObjectMapper();
         String s = mapper.writeValueAsString(allByUserIdWithOrderGoodsAndSku);
         System.out.println(s);
+    }
+
+    @Test
+    public void test1(){
+        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderInfo::getUserId,1);
+        Long aLong = this.orderInfoMapper.selectCount(wrapper);
+        System.out.println(aLong);
     }
 }

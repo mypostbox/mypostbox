@@ -2,9 +2,12 @@ package com.syedu.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.syedu.domain.Areas;
 import com.syedu.domain.Sku;
 import com.syedu.domain.Users;
+import com.syedu.mapper.AreasMapper;
 import com.syedu.mapper.UsersMapper;
+import com.syedu.service.OrderInfoService;
 import com.syedu.service.SkuService;
 import com.syedu.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +24,16 @@ import java.util.Map;
 @RestController
 public class UsersController {
     @Autowired
-    private UsersService usersService;
+    private AreasMapper areasMapper;
     @Autowired
     private UsersMapper usersMapper;
     @Autowired
+    private UsersService usersService;
+    @Autowired
     private SkuService skuService;
+    @Autowired
+    private OrderInfoService orderInfoService;
+
 
     /**
      * 用户登入
@@ -107,5 +115,53 @@ public class UsersController {
     public Users findAllUsers(@RequestHeader("Authorization") String token) throws Exception {
        return this.usersService.findAllUsers(token);
     }
+
+    /**
+     * 获取订单信息
+     * @param token 用户验证信息
+     * @param page 当前页数
+     * @param pageSize 最大页数
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("orders")
+    public Map<String,Object> findAllOrderInfoByUserId(@RequestHeader("Authorization") String token,
+                                                       @RequestParam("page") Integer page,
+                                                       @RequestParam("page_size") Integer pageSize) throws Exception{
+        return this.orderInfoService.findAllOrderInfoByUserId(token,page,pageSize);
+    }
+
+    /**
+     * 用户修改密码
+     * @param token
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("modification")
+    public Integer modificationPassword(@RequestHeader("Authorization") String token,
+                                        @RequestParam("password") String password) throws Exception {
+        return this.usersService.modificationPassword(token,password);
+    }
+    @GetMapping("checkPassword")
+    public Boolean checkPassword(@RequestHeader("Authorization") String token,
+                                 @RequestParam("password") String password) throws Exception{
+        return this.usersService.checkPassword(token,password);
+    }
+
+    /**
+     * 获取省份信息
+     * @return
+     */
+    @GetMapping("areas")
+    public List<Areas> getProvince(){
+        return this.areasMapper.findAllProvince();
+    }
+
+    @GetMapping("areas/{parentId}")
+    public List<Areas> findChild(@PathVariable("parentId") Integer parentId){
+        return this.areasMapper.findChild(parentId);
+    }
+
 
 }
