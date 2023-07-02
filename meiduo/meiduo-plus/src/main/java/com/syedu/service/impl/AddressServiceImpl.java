@@ -7,7 +7,7 @@ import com.syedu.domain.Users;
 import com.syedu.mapper.UsersMapper;
 import com.syedu.service.AddressService;
 import com.syedu.mapper.AddressMapper;
-import com.syedu.utils.keyword.JwtUtils;
+import com.syedu.utils.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * author:Administrator
  * createTime:2023/6/1613:55
@@ -31,5 +34,17 @@ public class UserServiceTest {
         users.setUsername("cheng").setPassword("11111111").setMobile("17770884439");
         Users register = this.usersService.register(users);
         System.out.println(register);
+    }
+
+    @Test
+    public void testFindAllOrderUser() throws Exception {
+        Map<String, Object> sss = this.usersService.findAllOrderUser("sss");
+        System.out.println(sss);
+    }
+
+    @Test
+    public void test1() throws Exception {
+        List<Map<String, Object>> jsdfo = this.usersService.findAllUserByMonthIncrement("jsdfo");
+        System.out.println(jsdfo);
     }
 }

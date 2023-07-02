@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -21,6 +22,15 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
                     many = @Many(select = "com.syedu.mapper.OrderGoodsMapper.findAllByOrderId"))
     })
     List<OrderInfo> findAllByUserIdWithOrderGoodsAndSku(@Param("page") Integer page, @Param("pageSize") Integer pageSize,@Param("userId") Integer userId);
+    /**
+     * 获取今日的订单的用户id
+     * @return
+     */
+    @Select("select distinct(user_id) from tb_order_info where datediff(date(create_time),curdate()) = 0 group by user_id")
+    @Results({
+            @Result(property = "count" , column = "user_id")
+    })
+    Map<String,Object> findAllOrderUser();
 }
 
 

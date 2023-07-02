@@ -8,8 +8,8 @@ import com.syedu.utils.config.SpringConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:Administrator
@@ -37,5 +37,11 @@ public class OrderInfoMapperTest {
         wrapper.eq(OrderInfo::getUserId,1);
         Long aLong = this.orderInfoMapper.selectCount(wrapper);
         System.out.println(aLong);
+    }
+
+    @Test
+    public void testFindAllOrderUser(){
+        Map<String, Object> allOrderUser = this.orderInfoMapper.findAllOrderUser();
+        System.out.println(allOrderUser);
     }
 }

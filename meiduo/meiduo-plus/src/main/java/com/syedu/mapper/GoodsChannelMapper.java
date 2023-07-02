@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -27,7 +28,6 @@ public interface GoodsChannelMapper extends BaseMapper<GoodsChannel> {
                     one = @One(select = "com.syedu.mapper.GoodsCategoryMapper.findAllByIdWithChild")),
     })
     List<GoodsChannel> findAllByGroupId(@Param("id") Integer id);
-
 }
 
 

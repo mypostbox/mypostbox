@@ -1,19 +1,27 @@
 package com.syedu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syedu.domain.Users;
+import com.syedu.mapper.OrderInfoMapper;
 import com.syedu.service.UsersService;
 import com.syedu.mapper.UsersMapper;
+import com.syedu.utils.util.CurrentDateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.syedu.utils.keyword.JwtUtils;
-import redis.clients.jedis.Jedis;
+import com.syedu.utils.util.JwtUtils;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * @author Administrator
@@ -23,19 +31,16 @@ import java.util.Date;
 @Service
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     implements UsersService{
-
     @Autowired
     private PrivateKey privateKey;
-
     @Autowired
     private UsersMapper usersMapper;
-
+    @Autowired
+    private OrderInfoMapper orderInfoMapper;
     @Autowired
     private PublicKey publicKey;
-
-
     /**
-     * 根据用户和密码校验用户是否存在
+     * 用户登入
      * @param user
      * @return Users
      * @throws Exception
@@ -49,12 +54,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         if(users != null){
             String token = JwtUtils.generateToken(users, privateKey, 7 * 24 * 60);
             users.setToken(token);
+            users.setLastLogin(new Date());
+            this.usersMapper.updateById(users);
             return users;
         }
         return null;
     }
-
-    /**
+  /**
      * 用户注册
      * @param user
      * @return
@@ -74,14 +80,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         users.setToken(JwtUtils.generateToken(users,privateKey,7 * 24 * 60));
         return users;
     }
-
     //获取用户的详细信息
     @Override
     public Users findAllUsers(String token) throws Exception {
         Users user = JwtUtils.getInfoFromToken(token,this.publicKey);
         return this.usersMapper.selectById(user.getId());
     }
-
     @Override
     public Integer modificationPassword(String token, String  password) throws Exception {
         Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
@@ -89,7 +93,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         users.setPassword(password);
         return this.usersMapper.updateById(users);
     }
-
     @Override
     public Boolean checkPassword(String token, String password) throws Exception {
         Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
@@ -100,6 +103,49 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         return false;
     }
 
+    @Override
+    public Map<String, Object> findAllCountUser(String token) throws Exception {
+        return this.usersMapper.findAllUserCount();
+    }
+    @Override
+    public Map<String, Object> findAllCreateUser(String token) throws Exception {
+        return this.usersMapper.findAllCurrentCreateUser();
+    }
+    @Override
+    public Map<String, Object> findAllLoginUser(String token) throws Exception {
+        return this.usersMapper.findAllCurrentLoginUser();
+    }
+
+    @Override
+    public Map<String, Object> findAllOrderUser(String token) throws Exception {
+       return this.orderInfoMapper.findAllOrderUser();
+    }
+    /**
+     * 获取月增用户
+     * @param token
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<Map<String, Object>> findAllUserByMonthIncrement(String token) throws Exception {
+        return this.usersMapper.findAllMonthCreateUser();
+    }
+    /**
+     * 管理员登录
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Users staffLogin(Users user) throws Exception {
+        Users users = this.usersMapper.staffLogin(user.getUsername(), user.getPassword());
+        if(users != null){
+            String token = JwtUtils.generateToken(users, this.privateKey, 7 * 24 * 60);
+            users.setToken(token);
+            return users;
+        }
+        return null;
+    }
     /**
      * 此方法已改，无法在使用，只做浏览
      * @param user

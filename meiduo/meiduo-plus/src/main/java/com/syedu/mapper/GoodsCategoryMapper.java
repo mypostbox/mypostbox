@@ -45,6 +45,8 @@ public interface GoodsCategoryMapper extends BaseMapper<GoodsCategory> {
     @Select("select * from tb_goods_category where id = #{id}")
     GoodsCategory findAllById(@Param("id") Integer id);
 
+
+
 }
 
 

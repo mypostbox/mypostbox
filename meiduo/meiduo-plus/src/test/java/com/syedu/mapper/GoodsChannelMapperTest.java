@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:Administrator
@@ -22,5 +23,10 @@ public class GoodsChannelMapperTest {
     public void test(){
         List<GoodsChannel> allBySequence = this.mapper.findAllByGroupId(1);
         allBySequence.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void test2(){
+
     }
 }

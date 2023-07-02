@@ -1,4 +1,4 @@
-package com.syedu.utils.keyword;
+package com.syedu.utils.util;
 
 import com.syedu.domain.Users;
 import io.jsonwebtoken.Claims;

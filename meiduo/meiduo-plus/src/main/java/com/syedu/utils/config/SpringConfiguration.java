@@ -1,16 +1,11 @@
 package com.syedu.utils.config;
 
 
-import com.alipay.api.AlipayConfig;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.Signer;
-import com.syedu.utils.keyword.*;
+import com.syedu.utils.util.RsaUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.converter.cbor.MappingJackson2CborHttpMessageConverter;
-import redis.clients.jedis.JedisPoolConfig;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
