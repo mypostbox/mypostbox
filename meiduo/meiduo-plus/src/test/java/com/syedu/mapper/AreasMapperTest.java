@@ -45,4 +45,10 @@ public class AreasMapperTest {
         System.out.println(s);
     }
 
+    @Test
+    public void testFindNameById(){
+        String nameById = this.areasMapper.findNameById(110100);
+        System.out.println(nameById);
+    }
+
 }

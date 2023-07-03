@@ -15,4 +15,8 @@ public interface AddressService extends IService<Address> {
     Map<String,Object> findAllAddress(String token) throws Exception;
 
     Integer addressStatus(String token,Integer addressId) throws Exception;
+
+    Address saveAddress(String token,Address address) throws Exception;
+    Address updateAddress(String token,Address address,Integer addressId) throws Exception;
+    Address updateAddressTitle(String token,Integer addressId,String title) throws Exception;
 }

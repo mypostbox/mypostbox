@@ -1,6 +1,7 @@
-package com.syedu.controller.admin;
+package com.syedu.controller.admins;
 
 import com.syedu.domain.Users;
+import com.syedu.service.GoodsVisitService;
 import com.syedu.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,11 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("admins")
-public class AdminUserController {
+public class AdminFrontController {
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private GoodsVisitService goodsVisitService;
     /**
      * 管理员登入
      * @param user
@@ -75,8 +78,6 @@ public class AdminUserController {
      */
     @GetMapping("statistical/goods_day_views")
     public List<Map<String,Object>> findAllGoodsDayViews(@RequestHeader("Authorization") String token)throws Exception{
-        return null;
+       return this.goodsVisitService.findAllGoodsDayViews(token);
     }
-
-
 }

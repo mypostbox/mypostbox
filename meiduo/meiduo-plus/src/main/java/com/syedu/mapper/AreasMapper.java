@@ -39,10 +39,19 @@ public interface AreasMapper extends BaseMapper<Areas> {
     })
     List<Areas> findAllChildByParent(@Param("parentId") Integer parentId);
 
+
     @Select("select * from tb_areas where parent_id is null")
     List<Areas> findAllProvince();
     @Select("select * from tb_areas where parent_id = #{parentId}")
     List<Areas> findChild(@Param("parentId") Integer parentId);
+
+    /**
+     * 根据id找姓名
+     * @param id
+     * @return
+     */
+    @Select("select name from tb_areas where id = #{id}")
+    String findNameById(@Param("id") Integer id);
 }
 
 
