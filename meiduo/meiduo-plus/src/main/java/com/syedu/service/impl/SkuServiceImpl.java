@@ -2,18 +2,27 @@ package com.syedu.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.syedu.domain.GoodsVisit;
 import com.syedu.domain.Sku;
+import com.syedu.domain.SkuSpecification;
 import com.syedu.domain.Users;
+import com.syedu.mapper.GoodsVisitMapper;
+import com.syedu.mapper.SkuSpecificationMapper;
 import com.syedu.service.SkuService;
 import com.syedu.mapper.SkuMapper;
 import com.syedu.utils.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
 import java.security.PublicKey;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -31,6 +40,10 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
     private PublicKey publicKey;
     @Autowired
     private SkuMapper skuMapper;
+    @Autowired
+    private GoodsVisitMapper goodsVisitMapper;
+    @Autowired
+    private SkuSpecificationMapper skuSpecificationMapper;
 
     /**
      * 查找购物车商品
@@ -119,6 +132,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
         return 200;
     }
 
+
     @Override
     public Boolean selectedAll(String token, Map<String, Object> map) throws Exception {
         Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
@@ -189,6 +203,34 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
         }else{
             this.jedis.lpush(user,skuId.toString());
         }
+        insertVisit(skuId);
+    }
+
+    /**
+     * 将商品浏览记录存入tb_goods_visit表
+     * @param skuId
+     * @throws ParseException
+     */
+    private void insertVisit(Integer skuId) throws ParseException {
+        Sku sku = this.skuMapper.selectById(skuId);
+        String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
+        LambdaQueryWrapper<GoodsVisit> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(GoodsVisit::getCategoryId,sku.getCategoryId());
+        if(this.goodsVisitMapper.exists(wrapper)){
+            GoodsVisit goodsVisit = this.goodsVisitMapper.selectOne(wrapper);
+            if(goodsVisit.getDate().toString().equals(currentDate)){
+                goodsVisit.setCount(goodsVisit.getCount()+1);
+                this.goodsVisitMapper.updateById(goodsVisit);
+            }else{
+                goodsVisit.setDate(LocalDate.parse(currentDate));
+                goodsVisit.setCount(1);
+                this.goodsVisitMapper.updateById(goodsVisit);
+            }
+        }else{
+           this.goodsVisitMapper.InsertGoodsVisit(1,sku.getCategoryId());
+        }
+
+
     }
     //获取用户浏览记录
     @Override
@@ -231,6 +273,88 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
             map.put("freight",10);
         }
         return map;
+    }
+    //分页获取所有的商品sku(或根据关键字查找)
+    @Override
+    public Map<String, Object> findAllSkuByPage(String token, Integer page, Integer pageSize, String keyword) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            Page<Sku> skuPage = new Page<>(page,pageSize);
+            if(keyword == null || "".equals(keyword)){
+                this.skuMapper.selectPage(skuPage,null);
+                map.put("lists",skuPage.getRecords());
+                map.put("page",page);
+                map.put("pages", Math.ceil(Double.parseDouble(Long.toString(skuPage.getTotal())) / Double.parseDouble(pageSize.toString())));
+            }else{
+                LambdaQueryWrapper<Sku> wrapper = new LambdaQueryWrapper<>();
+                wrapper.like(Sku::getName,"%"+keyword+"%");
+                this.skuMapper.selectPage(skuPage,wrapper);
+                map.put("lists",skuPage.getRecords());
+                map.put("page",page);
+                map.put("pages", Math.ceil(Double.parseDouble(Long.toString(skuPage.getTotal())) / Double.parseDouble(pageSize.toString())));
+            }
+            return map;
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Sku saveSkuAndSkuSpecification(String token, Sku skus) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            System.out.println(skus);
+            this.skuMapper.insert(skus);
+            Sku sku = this.skuMapper.selectOne(new LambdaQueryWrapper<Sku>().eq(Sku::getName, skus.getName()));
+            for (Map<String, Object> skuSpecification : skus.getSpecs()) {
+                Object optionId = skuSpecification.get("optionId");
+                Object specId = skuSpecification.get("specId");
+                this.skuSpecificationMapper.insert(new SkuSpecification().setSkuId(sku.getId()).setSpecId(Integer.parseInt(specId.toString())).setOptionId(Integer.parseInt(optionId.toString())));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Sku findSku(String token, Integer skuId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.skuMapper.findSkuWithSkuSpecification(skuId);
+        }
+        return null;
+    }
+    //更新sku信息
+    @Override
+    @Transactional
+    public Sku updateSku(String token, Integer skuId, Sku sku) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            sku.setId(skuId);
+            System.out.println(sku);
+           this.skuMapper.updateById(sku);
+           this.skuSpecificationMapper.delete(new LambdaQueryWrapper<SkuSpecification>().eq(SkuSpecification::getSkuId,skuId));
+            List<Map<String, Object>> specs = sku.getSpecs();
+            for(Map<String,Object> option : specs){
+                Object specId = option.get("spec_id");
+                Object optionId = option.get("option_id");
+                this.skuSpecificationMapper.insert(new SkuSpecification().setSkuId(skuId).setSpecId(Integer.parseInt(specId.toString())).setOptionId(Integer.parseInt(optionId.toString())));
+            }
+            return sku;
+        }
+        return null;
+    }
+    //删除sku
+    @Override
+    @Transactional
+    public Integer deleteSku(String token, Integer skuId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            this.skuSpecificationMapper.delete(new LambdaQueryWrapper<SkuSpecification>().eq(SkuSpecification::getSkuId,skuId));
+            this.skuMapper.deleteById(skuId);
+            return 200;
+        }
+        return null;
     }
 }
 

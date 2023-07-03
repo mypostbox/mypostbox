@@ -24,8 +24,14 @@ public class UserMapperTest {
 
     @Test
     public void test(){
-
-
+        long l = 7;
+        Integer i = 1;
+        Double x  = Double.parseDouble(Long.toString(l));
+        Double y = Double.parseDouble(i.toString());
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(y/x);
+        System.out.println(Math.ceil(y/x));
     }
 
     @Test

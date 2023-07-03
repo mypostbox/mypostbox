@@ -14,16 +14,20 @@ import java.util.List;
  * 中间表
  */
 public interface SkuSpecificationMapper extends BaseMapper<SkuSpecification> {
-
     @Select("select * from tb_sku_specification where sku_id = #{skuId}")
     @Results({
             @Result(property = "spuSpecifications" , column = "spec_id",
                     many = @Many(select = "com.syedu.mapper.SpuSpecificationMapper.findAllByIdWithOption")),
     })
     List<SkuSpecification> findAllBySkuId(@Param("skuId") Integer skuId);
+    @Select("select * from tb_sku_specification where sku_id = #{skuId}")
+    List<SkuSpecification> findAllBySkuIds(@Param("skuId") Integer skuId);
+
+
 
     @Select("select * from tb_sku_specification where option_id = #{optionId}")
     List<SkuSpecification> findAllByOptionId(@Param("optionId") Integer optionId);
+
 }
 
 

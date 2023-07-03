@@ -30,5 +30,9 @@ public class GoodsCategoryMapperTest {
         GoodsCategory allById = this.goodsCategoryMapper.findAllById(1);
         System.out.println(allById);
     }
+    @Test
+    public void test2(){
+
+    }
 
 }

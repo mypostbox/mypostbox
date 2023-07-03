@@ -3,6 +3,7 @@ package com.syedu.service;
 import com.syedu.domain.GoodsCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,4 +18,12 @@ public interface GoodsCategoryService extends IService<GoodsCategory> {
      * @return
      */
     Map<String,Object> listService(Integer goodsCategoryId);
+
+    /**
+     * 获取商品种类goodsCategory
+     * @param token
+     * @return
+     * @throws Exception
+     */
+    List<GoodsCategory> findGoodsCategory(String token) throws Exception;
 }

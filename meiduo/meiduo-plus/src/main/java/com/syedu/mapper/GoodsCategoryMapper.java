@@ -41,11 +41,18 @@ public interface GoodsCategoryMapper extends BaseMapper<GoodsCategory> {
     })
     List<GoodsCategory> findAllByParentId(@Param(value = "parentId") Integer parentId);
 
-
+    /**
+     * 根据id找到单个GoodsCategory
+     * @param id
+     * @return
+     */
     @Select("select * from tb_goods_category where id = #{id}")
     GoodsCategory findAllById(@Param("id") Integer id);
-
-
+    /**
+     * 根据id找到单个GoodsCategory的名字
+     */
+    @Select("select name from tb_goods_category where id = #{id}")
+    String findNameById(@Param("id") Integer id);
 
 }
 

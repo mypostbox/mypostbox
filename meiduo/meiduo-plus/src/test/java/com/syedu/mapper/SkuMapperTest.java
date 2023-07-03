@@ -26,4 +26,12 @@ public class SkuMapperTest {
         String s = mapper.writeValueAsString(allByIdWithSpecificationAndOption);
         System.out.println(s);
     }
+
+    @Test
+    public void test1(){
+        Sku skuWithSkuSpecification = this.skuMapper.findSkuWithSkuSpecification(1);
+        System.out.println(skuWithSkuSpecification);
+    }
+
+
 }

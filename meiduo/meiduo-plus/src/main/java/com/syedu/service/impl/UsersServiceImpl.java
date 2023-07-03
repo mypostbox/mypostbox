@@ -3,6 +3,7 @@ package com.syedu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syedu.domain.Users;
@@ -164,6 +165,59 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             return null;
         }
         return JwtUtils.generateToken(users, privateKey, 7 * 24 * 60);
+    }
+
+    /**
+     * 分页查询所有用户信息(或根据关键字查找)
+     * @param token
+     * @param page
+     * @param pageSize
+     * @param keyword
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Map<String, Object> fnGetData(String token, Integer page, Integer pageSize, String keyword) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            Page<Users> usersPage = new Page<>(page,pageSize);
+            if(keyword == null || keyword == "") {
+                this.usersMapper.selectPage(usersPage, null);
+                map.put("lists", usersPage.getRecords());
+                map.put("page", page);
+                map.put("pages", Math.ceil(Double.parseDouble(Long.toString(usersPage.getTotal())) / Double.parseDouble(pageSize.toString())));
+            }else{
+                LambdaQueryWrapper<Users> wrapper = new LambdaQueryWrapper<>();
+                wrapper.like(Users::getUsername,"%"+keyword+"%");
+                this.usersMapper.selectPage(usersPage,wrapper);
+                map.put("lists",usersPage.getRecords());
+                map.put("page",page);
+                map.put("pages",Math.ceil(Double.parseDouble(Long.toString(usersPage.getTotal())) / Double.parseDouble(pageSize.toString())));
+            }
+            return map;
+        }
+        return null;
+    }
+
+    /**
+     * 保存用户
+     * @param token
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Users saveUser(String token, Users user) throws Exception {
+        Users users = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(users.getId() != null){
+            System.out.println(user);
+            user.setFirstName(user.getUsername());
+            user.setLastName(user.getUsername());
+            this.usersMapper.insert(user);
+            return user;
+        }
+        return null;
     }
 }
 

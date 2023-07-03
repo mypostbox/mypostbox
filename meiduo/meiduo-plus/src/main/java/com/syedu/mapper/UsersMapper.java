@@ -63,6 +63,14 @@ public interface UsersMapper extends BaseMapper<Users> {
             @Result(property = "count" , column = "count(id)")
     })
     Map<String,Object> findAllCurrentLoginUser();
+    /**
+     * 根据姓名关键字查询用户
+     */
+    @Select("select * from tb_users where username like CONCAT('%',#{keyword},'%')")
+    List<Users> findAllUserByLike(@Param("keyword") String keyword);
+
+
+
 }
 
 

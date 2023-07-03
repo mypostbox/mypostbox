@@ -48,6 +48,15 @@ public interface SkuMapper extends BaseMapper<Sku> {
     Sku findAllByIdWithSpecificationAndOption(@Param("id") Integer sku_id);
     @Select("select * from tb_sku where id = #{id}")
     Sku findAllByIdSku(@Param("id") Integer id);
+
+    //根据id查找sku，包含skuSpecification信息
+    @Select("select * from tb_sku where id = #{skuId}")
+    @Results({
+            @Result(property = "id" , column = "id"),
+            @Result(property = "skuSpecifications" , column = "id" ,
+                    many = @Many(select = "com.syedu.mapper.SkuSpecificationMapper.findAllBySkuIds"))
+    })
+    Sku findSkuWithSkuSpecification(@Param("skuId") Integer skuId);
 }
 
 

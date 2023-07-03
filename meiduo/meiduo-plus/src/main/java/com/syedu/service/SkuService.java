@@ -3,6 +3,7 @@ package com.syedu.service;
 import com.syedu.domain.Sku;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +43,17 @@ public interface SkuService extends IService<Sku> {
 
     //获取用户结算商品
     Map<String,Object> findAllSku(String token) throws Exception;
+
+
+    //分页获取所有的商品sku(或根据关键字查找)
+    Map<String,Object> findAllSkuByPage(String token,Integer page,Integer pageSize,String keyword) throws Exception;
+    //保存sku信息和skuSpecification信息
+    Sku saveSkuAndSkuSpecification(String token,Sku sku) throws Exception;
+    //根据id查找sku（包含options）
+    Sku findSku(String token,Integer skuId) throws Exception;
+    //更新sku信息
+    Sku updateSku(String token,Integer skuId,Sku sku) throws Exception;
+    //删除sku
+    Integer deleteSku(String token,Integer skuId) throws Exception;
 
 }

@@ -7,7 +7,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -48,5 +50,16 @@ public class CurrentDateUtilsTest {
         System.out.println(currentLocalDate);
         LocalDate localDate = currentLocalDate.minusMonths(1);
         System.out.println(localDate);
+    }
+
+    @Test
+    public void test5(){
+        String format = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
+        System.out.println(format);
+    }
+
+    @Test
+    public void test6(){
+
     }
 }

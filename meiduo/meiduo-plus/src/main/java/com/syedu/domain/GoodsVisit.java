@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -24,12 +26,12 @@ public class GoodsVisit implements Serializable {
     /**
      * 
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 
@@ -39,7 +41,7 @@ public class GoodsVisit implements Serializable {
     /**
      * 
      */
-    private Date date;
+    private LocalDate date;
 
     /**
      * 

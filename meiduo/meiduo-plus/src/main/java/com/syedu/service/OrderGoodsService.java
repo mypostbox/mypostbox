@@ -3,6 +3,7 @@ package com.syedu.service;
 import com.syedu.domain.OrderGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,4 +14,8 @@ import java.util.Map;
 public interface OrderGoodsService extends IService<OrderGoods> {
     //用户下单
     Map<String,Object> placeOrder(String token,Map<String,Object> map) throws Exception;
+
+
+    List<OrderGoods> uncommentGoods(String token, String orderId) throws Exception;
+
 }

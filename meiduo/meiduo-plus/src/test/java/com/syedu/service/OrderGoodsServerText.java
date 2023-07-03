@@ -26,4 +26,9 @@ public class OrderGoodsServerText {
 
     }
 
+    @Test
+    public void test2(){
+
+    }
+
 }

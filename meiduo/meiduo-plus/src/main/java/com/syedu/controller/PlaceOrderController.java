@@ -1,11 +1,14 @@
 package com.syedu.controller;
 
+import com.syedu.domain.Address;
+import com.syedu.domain.OrderGoods;
 import com.syedu.service.AddressService;
 import com.syedu.service.OrderGoodsService;
 import com.syedu.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,5 +46,44 @@ public class PlaceOrderController {
     public Map<String,Object> placeOrder(@RequestHeader("Authorization") String token,
                                          @RequestBody Map<String,Object> map) throws Exception{
         return this.orderGoodsService.placeOrder(token,map);
+    }
+
+    /**
+     * 用户地址保存
+     * @param token
+     * @param address
+     * @return
+     */
+    @PostMapping( "addresses")
+    public Address saveAddresses(@RequestHeader("Authorization") String token,
+                                            @RequestBody Address address) throws Exception {
+       return this.addressService.saveAddress(token,address);
+    }
+    /**
+     * 用户地址修改
+     */
+    @PutMapping("addresses/{addressId}")
+    public Address updateAddress(@RequestHeader("Authorization") String token,
+                                 @RequestBody Address address,
+                                 @PathVariable Integer addressId) throws Exception {
+        return this.addressService.updateAddress(token, address, addressId);
+    }
+    /**
+     * 修改保存地址标题
+     */
+    @PutMapping("addresses/{addressId}/title")
+    public Address updateAddressTitle(@RequestHeader("Authorization") String token,
+                                      @PathVariable("addressId") Integer addressId,
+                                      @RequestBody Map<String,Object> map) throws Exception {
+        return this.addressService.updateAddressTitle(token, addressId, map.get("title").toString());
+    }
+    /**
+     *根据订单号获取用户的商品，（给评论页面提供基础数据）
+     */
+    @GetMapping("orders/{orderId}/uncommentgoods")
+    public List<OrderGoods> uncommentGoods(@RequestHeader("Authorization") String token,
+                                           @PathVariable("orderId") String orderId) throws Exception {
+        return this.orderGoodsService.uncommentGoods(token, orderId);
+
     }
 }

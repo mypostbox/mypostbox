@@ -7,8 +7,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -16,6 +21,9 @@ import lombok.Data;
  */
 @TableName(value ="tb_sku")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
 public class Sku implements Serializable {
     /**
      * 
@@ -120,4 +128,9 @@ public class Sku implements Serializable {
      */
     @TableField(exist = false)
     private Spu spu;
+    /**
+     *
+     */
+    @TableField(exist = false)
+    private List<Map<String,Object>> specs;
 }

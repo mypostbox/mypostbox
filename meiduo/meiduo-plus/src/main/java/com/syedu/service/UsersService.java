@@ -32,4 +32,9 @@ public interface UsersService extends IService<Users> {
     Map<String,Object> findAllLoginUser(String token)throws Exception;
     Map<String,Object> findAllOrderUser(String token)throws Exception;
     List<Map<String, Object>> findAllUserByMonthIncrement(String token)throws Exception;
+
+
+
+    Map<String,Object> fnGetData(String token,Integer page,Integer pageSize,String keyword) throws Exception;
+    Users saveUser(String token,Users user)throws Exception;
 }

@@ -1,6 +1,8 @@
 package com.syedu.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.syedu.domain.Users;
+import com.syedu.mapper.UsersMapper;
 import com.syedu.utils.config.SpringConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import java.util.Map;
 public class UserServiceTest {
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private UsersMapper usersMapper;
 
 
     @Test
@@ -46,5 +50,13 @@ public class UserServiceTest {
     public void test1() throws Exception {
         List<Map<String, Object>> jsdfo = this.usersService.findAllUserByMonthIncrement("jsdfo");
         System.out.println(jsdfo);
+    }
+
+    @Test
+    public void test2(){
+        LambdaQueryWrapper<Users> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(Users::getUsername,"%"+"c"+"%");
+        List<Users> users = this.usersMapper.selectList(wrapper);
+        users.stream().forEach(System.out::println);
     }
 }

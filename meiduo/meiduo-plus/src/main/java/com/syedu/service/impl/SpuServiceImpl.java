@@ -2,9 +2,17 @@ package com.syedu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.syedu.domain.Spu;
+import com.syedu.domain.Users;
 import com.syedu.service.SpuService;
 import com.syedu.mapper.SpuMapper;
+import com.syedu.utils.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.security.PublicKey;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -14,7 +22,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu>
     implements SpuService{
-
+    @Autowired
+    private SpuMapper spuMapper;
+    @Autowired
+    private PublicKey publicKey;
+    @Override
+    public List<Spu> findSpu(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.spuMapper.selectList(null);
+        }
+        return null;
+    }
+    //分页查找spu数据
+    @Override
+    public Map<String, Object> findAllSpuByPage(String token,Integer page,Integer pageSize) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            List<Map<String, Object>> allSpuByPage = this.spuMapper.findAllSpuByPage((page - 1) * pageSize, pageSize);
+            map.put("lists",allSpuByPage);
+            map.put("page",page);
+            Long total = this.spuMapper.selectCount(null);
+            map.put("pages",Math.ceil(Double.parseDouble(Long.toString(total))/Double.parseDouble(pageSize.toString())));
+            return map;
+        }
+        return null;
+    }
 }
 
 

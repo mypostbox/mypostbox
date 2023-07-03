@@ -4,6 +4,9 @@ import com.syedu.domain.Spu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Administrator
  * @description 针对表【tb_spu】的数据库操作Mapper
@@ -25,6 +28,11 @@ public interface SpuMapper extends BaseMapper<Spu> {
                     one = @One(select = "com.syedu.mapper.GoodsCategoryMapper.findAllById")),
     })
     Spu findAllById(@Param("id") Integer id);
+    @Select("select * from tb_spu limit #{page} ,#{pageSize}")
+    List<Map<String,Object>> findAllSpuByPage(@Param("page") Integer page,@Param("pageSize") Integer pageSize);
+
+    @Select("select * from tb_spu where id = #{id}")
+    Spu findSpuById(@Param("id") Integer id);
 }
 
 

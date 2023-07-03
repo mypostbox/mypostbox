@@ -1,11 +1,13 @@
 package com.syedu.utils.config;
 
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.syedu.utils.util.RsaUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,6 +28,13 @@ public class SpringConfiguration {
     public PrivateKey privateKey() throws Exception {
         return RsaUtils.getPrivateKey1("pri_key");
     }
+
+//    @Bean
+//    public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder(){
+//        Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder = new Jackson2ObjectMapperBuilder();
+//        jackson2ObjectMapperBuilder.modulesToInstall(JavaTimeModule.class);
+//        return jackson2ObjectMapperBuilder;
+//    }
 
 //    @Bean
 //    public AlipayConfig alipayConfig(){

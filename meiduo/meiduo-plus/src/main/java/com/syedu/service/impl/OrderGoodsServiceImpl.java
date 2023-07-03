@@ -13,6 +13,7 @@ import com.syedu.utils.util.JwtUtils;
 import com.syedu.utils.util.OrderNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.TestConstructor;
 import redis.clients.jedis.Jedis;
 
 import java.security.PublicKey;
@@ -45,9 +46,9 @@ public class OrderGoodsServiceImpl extends ServiceImpl<OrderGoodsMapper, OrderGo
         Integer totalCount = 0;
         Double totalAmount = 0.0;
         Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
-        Integer defaultAddress = (Integer) map.get("address");
-        Integer payMethod = (Integer) map.get("pay_method");
-        this.orderInfoMapper.insert(new OrderInfo().setOrderId(orderId).setAddressId(defaultAddress).setUserId(user.getId()));
+        Integer defaultAddress = Integer.parseInt(map.get("address").toString()) ;
+        Integer payMethod = Integer.parseInt(map.get("pay_method").toString()) ;
+        this.orderInfoMapper.insert(new OrderInfo().setOrderId(orderId).setAddressId(defaultAddress).setPayMethod(payMethod).setUserId(user.getId()));
         Map<String, Object> allSku = this.skuService.findAllSku(token);
         List<Sku> skus= (List<Sku>) allSku.get("skus");
         Double freight = Double.parseDouble(allSku.get("freight").toString()) ;
@@ -56,13 +57,23 @@ public class OrderGoodsServiceImpl extends ServiceImpl<OrderGoodsMapper, OrderGo
             totalAmount += sku.getPrice() * sku.getCount();
             this.orderGoodsMapper.insert(new OrderGoods().setCreateTime(new Date()).setUpdateTime(new Date()).setCount(sku.getCount()).setPrice(sku.getPrice()).setComment("").setScore(0).setIsAnonymous(0).setIsCommented(0).setOrderId(orderId).setSkuId(sku.getId()));
         }
-        this.orderInfoMapper.updateById(new OrderInfo().setCreateTime(new Date()).setUpdateTime(new Date()).setOrderId(orderId).setTotalCount(totalCount).setTotalAmount(totalAmount).setFreight(freight).setPayMethod(payMethod).setStatus(1).setAddressId(defaultAddress).setUserId(user.getId()));
+        this.orderInfoMapper.updateById(new OrderInfo().setTotalCount(totalCount).setTotalAmount(totalAmount).setFreight(freight).setStatus(1));
         map.put("order_id",orderId);
         map.put("payment_amount",totalAmount);
         map.put("pay_method",payMethod);
         deleteSkus("cart"+user.getId(),skus);
         return map;
     }
+
+    @Override
+    public List<OrderGoods> uncommentGoods(String token, String orderId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+           return this.orderGoodsMapper.findAllByOrderId(orderId);
+        }
+        return null;
+    }
+
     //删除用户存在redis中的数据
     private void deleteSkus(String key,List<Sku> sku){
         for(Sku s : sku){
