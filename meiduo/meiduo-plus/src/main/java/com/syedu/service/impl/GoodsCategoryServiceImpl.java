@@ -53,9 +53,17 @@ public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, G
     public List<GoodsCategory> findGoodsCategory(String token) throws Exception {
         Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
         if(user.getId() != null){
-//            LambdaQueryWrapper<GoodsCategory> wrapper = new LambdaQueryWrapper<>();
-//            wrapper.isNull(GoodsCategory::getParentId);
             return  this.goodsCategoryMapper.selectList(null);
+        }
+        return null;
+    }
+    @Override
+    public List<GoodsCategory> findGoodsCategoryOne(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            LambdaQueryWrapper<GoodsCategory> wrapper = new LambdaQueryWrapper<>();
+            wrapper.isNull(GoodsCategory::getParentId);
+            return  this.goodsCategoryMapper.selectList(wrapper);
         }
         return null;
     }

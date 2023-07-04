@@ -20,10 +20,12 @@ public interface GoodsCategoryService extends IService<GoodsCategory> {
     Map<String,Object> listService(Integer goodsCategoryId);
 
     /**
-     * 获取商品种类goodsCategory
+     * 获取所有商品种类goodsCategory
      * @param token
      * @return
      * @throws Exception
      */
     List<GoodsCategory> findGoodsCategory(String token) throws Exception;
+    //获取一级goodsCategory
+    List<GoodsCategory> findGoodsCategoryOne(String token) throws Exception;
 }

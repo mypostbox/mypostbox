@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -17,6 +18,8 @@ public interface SkuImageMapper extends BaseMapper<SkuImage> {
 
     @Select("select * from tb_sku_image where sku_id = #{skuId}")
     List<SkuImage> findAllBySkuId(@Param("skuId") Integer skuId);
+    @Select("select id,image,sku_id 'sku' from tb_sku_image limit #{page} , #{pageSize}")
+    List<Map<String,Object>> findAllSkuImageByPage(@Param("page") Integer page,@Param("pageSize") Integer pageSize);
 }
 
 

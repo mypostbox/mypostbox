@@ -26,4 +26,7 @@ public interface SpuSpecificationService extends IService<SpuSpecification> {
     Integer updateSpuSpec(String token,Integer specId,SpuSpecification spuSpecification) throws Exception;
     //根据specId删除spec
     Integer deleteSpuSpec(String token,Integer specId) throws Exception;
+
+    //获取options的类型
+    List<SpuSpecification> findAllSpuSpec(String token) throws Exception;
 }

@@ -14,4 +14,7 @@ import java.util.Map;
 public interface ChannelGroupService extends IService<ChannelGroup> {
 
     List<ChannelGroup> indexService();
+
+    //获取goodsChannel的group的所有类型
+    List<ChannelGroup> findAllChannelGroup(String token) throws Exception;
 }

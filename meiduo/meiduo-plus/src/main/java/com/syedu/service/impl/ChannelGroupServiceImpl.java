@@ -6,11 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syedu.domain.ChannelGroup;
 import com.syedu.domain.GoodsCategory;
 import com.syedu.domain.GoodsChannel;
+import com.syedu.domain.Users;
 import com.syedu.service.ChannelGroupService;
 import com.syedu.mapper.ChannelGroupMapper;
+import com.syedu.utils.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.PublicKey;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +26,8 @@ import java.util.stream.Stream;
 @Service
 public class ChannelGroupServiceImpl extends ServiceImpl<ChannelGroupMapper, ChannelGroup>
     implements ChannelGroupService{
+    @Autowired
+    private PublicKey publicKey;
     @Autowired
     private ChannelGroupMapper channelGroupMapper;
 
@@ -39,6 +44,15 @@ public class ChannelGroupServiceImpl extends ServiceImpl<ChannelGroupMapper, Cha
             }
         }
         return allBy;
+    }
+    //获取goodsChannel的group的所有类型
+    @Override
+    public List<ChannelGroup> findAllChannelGroup(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.channelGroupMapper.selectList(null);
+        }
+        return null;
     }
 }
 

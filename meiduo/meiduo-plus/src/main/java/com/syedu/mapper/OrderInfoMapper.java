@@ -31,6 +31,20 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
             @Result(property = "count" , column = "user_id")
     })
     Map<String,Object> findAllOrderUser();
+
+
+    //分页获取订单的数据
+    @Select("select create_time,order_id from tb_order_info where order_id like CONCAT('%',#{keyword},'%') limit #{page} , #{pageSize}")
+    List<Map<String,Object>> findAllOrderByPage(@Param("page")  Integer page,@Param("pageSize") Integer pageSize,@Param("keyword") String keyword);
+
+    //根据id获取订单详情
+    @Select("select DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%S') 'create_time',order_id,total_count,total_amount,freight,pay_method,status,(select username from tb_users where id = user_id) 'user' from tb_order_info where order_id = #{orderId}")
+    @Results({
+            @Result(property = "order_id" , column = "order_id"),
+            @Result(property = "skus" , column = "order_id" ,
+                    many = @Many(select = "com.syedu.mapper.OrderGoodsMapper.findSkuByOrderId"))
+    })
+    Map<String,Object> findOrder(@Param("orderId") String orderId);
 }
 
 

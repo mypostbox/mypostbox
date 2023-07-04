@@ -1,14 +1,8 @@
 package com.syedu.controller.admins;
 
 
-import com.syedu.domain.GoodsCategory;
-import com.syedu.domain.Sku;
-import com.syedu.domain.Spu;
-import com.syedu.domain.SpuSpecification;
-import com.syedu.service.GoodsCategoryService;
-import com.syedu.service.SkuService;
-import com.syedu.service.SpuService;
-import com.syedu.service.SpuSpecificationService;
+import com.syedu.domain.*;
+import com.syedu.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +25,17 @@ public class AdminSkuController {
     private SpuService spuService;
     @Autowired
     private SpuSpecificationService spuSpecificationService;
+    @Autowired
+    private SpecificationOptionService specificationOptionService;
+    @Autowired
+    private GoodsChannelService goodsChannelService;
+    @Autowired
+    private ChannelGroupService channelGroupService;
+    @Autowired
+    private BrandService brandService;
+    @Autowired
+    private SkuImageService skuImageService;
+    //SKU管理
     /**
      * 分页获取所有的商品sku(或根据关键字查找)
      */
@@ -47,7 +52,7 @@ public class AdminSkuController {
      * @param sku
      * @return
      */
-    @PostMapping("/skus")
+    @PostMapping("skus")
     Sku saveSku(@RequestHeader("Authorization") String token,
                 Sku sku) throws Exception {
         return this.skuService.saveSkuAndSkuSpecification(token,sku);
@@ -89,14 +94,8 @@ public class AdminSkuController {
                                                 @PathVariable("spuId") Integer spuId) throws Exception {
         return this.spuSpecificationService.findSpuSpecificationBySpuId(token,spuId);
     }
-    //分页查找spu数据
-    @GetMapping("goods")
-    Map<String,Object> findAllSpuByPage(@RequestHeader("Authorization") String token,
-                                              @RequestParam("page") Integer page,
-                                              @RequestParam("pagesize") Integer pageSize) throws Exception {
-        return this.spuService.findAllSpuByPage(token, page, pageSize);
-    }
 
+    //规格管理
     //分页查找specs数据
     @GetMapping("goods/specs")
     Map<String,Object> findAllSpecsByPage(@RequestHeader("Authorization") String token,
@@ -128,6 +127,115 @@ public class AdminSkuController {
     Map<String,Object> findSpuSpecsById(@RequestHeader("Authorization") String token,
                                         @PathVariable("specId") Integer specId) throws Exception {
         return this.spuSpecificationService.findSpuSpecById(token, specId);
+    }
+    //获取options的类型
+    @GetMapping("goods/specs/simple")
+    List<SpuSpecification> findAllSpuSpec(@RequestHeader("Authorization") String token) throws Exception {
+        return this.spuSpecificationService.findAllSpuSpec(token);
+    }
+
+    //频道管理
+    //分页获取goodsChannel的数据
+    @GetMapping("goods/channels")
+    Map<String,Object> findAllChannelByPage(@RequestHeader("Authorization") String token,
+                                            @RequestParam("page") Integer page,
+                                            @RequestParam("pagesize") Integer pageSize) throws Exception {
+        return this.goodsChannelService.findAllChannelByPage(token, page, pageSize);
+    }
+    //获取goodsChannel的group的所有类型
+    @GetMapping("goods/channel_types")
+    List<ChannelGroup> findAllChannelGroup(@RequestHeader("Authorization") String token) throws Exception {
+        return this.channelGroupService.findAllChannelGroup(token);
+    }
+    //获取goodsChannel的category的所有类型
+    @GetMapping("goods/categories")
+    List<GoodsCategory> fndAllGoodsCategory(@RequestHeader("Authorization") String token) throws Exception {
+        return this.goodsCategoryService.findGoodsCategoryOne(token);
+    }
+    //添加保存goodsChannel
+    @PostMapping("goods/channels")
+    Integer saveGoodsChannel(@RequestHeader("Authorization") String token,
+                             GoodsChannel goodsChannel) throws Exception {
+        return this.goodsChannelService.saveGoodsChannel(token, goodsChannel);
+    }
+    //根据goodsChannelId找goodsChannel
+    @GetMapping("goods/channels/{goodsChannelId}")
+    Map<String,Object> findGoodsChannel(@RequestHeader("Authorization") String token,
+                                       @PathVariable("goodsChannelId") Integer goodsChannelId){
+        return null;
+    }
+    //根据goodsChannelId更新goodsChannel
+    @PutMapping("goods/channels/{goodsChannelId}")
+    Integer updateGoodsChannel(@RequestHeader("Authorization") String token,
+                               @PathVariable("goodsChannelId") Integer goodsChannelId,
+                               @RequestBody GoodsChannel goodsChannel) throws Exception {
+        return this.goodsChannelService.updateGoodsChannel(token, goodsChannelId, goodsChannel);
+    }
+    //根据goodsChannelId删除goodsChannel
+    @DeleteMapping("goods/channels/{goodsChannelId}")
+    Integer deleteGoodsChannel(@RequestHeader("Authorization") String token,
+                               @PathVariable("goodsChannelId") Integer goodsChannelId) throws Exception {
+        return this.goodsChannelService.deleteGoodsChannel(token,goodsChannelId);
+    }
+
+    //规格选项管理
+    //分页查找options数据
+    @GetMapping("specs/options")
+    Map<String,Object> findAllOptionByPage(@RequestHeader("Authorization") String token,
+                                           @RequestParam("page") Integer page,
+                                           @RequestParam("pagesize") Integer pageSize) throws Exception {
+        return this.specificationOptionService.findAllOptionByPage(token, page, pageSize);
+    }
+    //添加保存options
+    @PostMapping("specs/options")
+    Integer saveOption(@RequestHeader("Authorization") String token,
+                       SpecificationOption specificationOption) throws Exception {
+        return this.specificationOptionService.saveOption(token, specificationOption);
+    }
+    //根据optionId获取option
+    @GetMapping("specs/options/{optionId}")
+    Map<String,Object> getOption(@RequestHeader("Authorization") String token,
+                                 @PathVariable("optionId") Integer optionId) throws Exception {
+        return this.specificationOptionService.getOption(token, optionId);
+    }
+    //根据optionsId修改option
+    @PutMapping("specs/options/{optionId}")
+    Integer updateOption(@RequestHeader("Authorization") String token,
+                         @PathVariable("optionId") Integer optionId,
+                         @RequestBody SpecificationOption specificationOption) throws Exception {
+        return this.specificationOptionService.updateOption(token, optionId, specificationOption);
+    }
+    //根据optionsId删除option
+    @DeleteMapping("specs/options/{optionId}")
+    Integer delete(@RequestHeader("Authorization") String token,
+                   @PathVariable("optionId") Integer optionId) throws Exception {
+        return this.specificationOptionService.deleteOption(token, optionId);
+    }
+
+    //品牌管理
+    //分页获取brand的数据
+    @GetMapping("goods/brands")
+    Map<String,Object> findAllBrandByPage(@RequestHeader("Authorization") String token,
+                                          @RequestParam("page") Integer page,
+                                          @RequestParam("pagesize") Integer pageSize) throws Exception {
+        return this.brandService.findAllBrandByPage(token,page,pageSize);
+    }
+
+    //图片管理
+    @GetMapping("skus/images")
+    Map<String,Object> findAllSkuImage(@RequestHeader("Authorization") String token,
+                                       @RequestParam("page") Integer page,
+                                       @RequestParam("pagesize") Integer pageSize) throws Exception {
+        return this.skuImageService.findAllSkuImageByPage(token,page,pageSize);
+    }
+
+    //SPU管理
+    //分页查找spu数据
+    @GetMapping("goods")
+    Map<String,Object> findAllSpuByPage(@RequestHeader("Authorization") String token,
+                                        @RequestParam("page") Integer page,
+                                        @RequestParam("pagesize") Integer pageSize) throws Exception {
+        return this.spuService.findAllSpuByPage(token, page, pageSize);
     }
 
 }

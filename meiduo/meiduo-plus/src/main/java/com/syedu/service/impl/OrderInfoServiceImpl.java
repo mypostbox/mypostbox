@@ -38,6 +38,39 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         maps.put("count",this.orderInfoMapper.selectCount(wrapper));
         return maps;
     }
+    //分页获取订单的数据
+    @Override
+    public Map<String, Object> findAllOrderByPage(String token, Integer page, Integer pageSize, String keyword) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            map.put("lists",this.orderInfoMapper.findAllOrderByPage((page-1)*pageSize,pageSize,keyword));
+            map.put("page",page);
+            Long total = this.orderInfoMapper.selectCount(null);
+            map.put("pages",Math.ceil(Double.parseDouble(Long.toString(total))/Double.parseDouble(pageSize.toString())));
+            return map;
+        }
+        return null;
+    }
+    //根据id获取订单详情
+    @Override
+    public Map<String, Object> findOrder(String token, String orderId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+          return this.orderInfoMapper.findOrder(orderId);
+        }
+        return null;
+    }
+    //修改订单的状态
+    @Override
+    public Integer updateOrder(String token, String orderId, OrderInfo orderInfo) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+           orderInfo.setOrderId(orderId);
+          return this.orderInfoMapper.updateById(orderInfo);
+        }
+        return null;
+    }
 }
 
 

@@ -1,5 +1,7 @@
 package com.syedu.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syedu.domain.GoodsChannel;
 import com.syedu.utils.config.SpringConfiguration;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,10 @@ public class GoodsChannelMapperTest {
     }
 
     @Test
-    public void test2(){
-
+    public void test2() throws JsonProcessingException {
+        List<Map<String, Object>> allChannelByPage = this.mapper.findAllChannelByPage(0, 5);
+        ObjectMapper mapper1 = new ObjectMapper();
+        String s = mapper1.writeValueAsString(allChannelByPage);
+        System.out.println(s);
     }
 }

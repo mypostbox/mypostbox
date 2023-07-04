@@ -15,4 +15,13 @@ import java.util.Map;
 public interface OrderInfoService extends IService<OrderInfo> {
 
     Map<String,Object> findAllOrderInfoByUserId(String token, Integer page,Integer pageSize) throws Exception;
+
+    //分页获取订单的数据
+    Map<String,Object> findAllOrderByPage(String token,Integer page,Integer pageSize,String keyword) throws Exception;
+
+    //根据id获取订单详情
+    Map<String,Object> findOrder(String token,String orderId) throws Exception;
+
+    //修改订单的状态
+    Integer updateOrder(String token,String orderId,OrderInfo orderInfo) throws Exception;
 }

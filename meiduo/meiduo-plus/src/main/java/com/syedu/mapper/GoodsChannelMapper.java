@@ -28,6 +28,24 @@ public interface GoodsChannelMapper extends BaseMapper<GoodsChannel> {
                     one = @One(select = "com.syedu.mapper.GoodsCategoryMapper.findAllByIdWithChild")),
     })
     List<GoodsChannel> findAllByGroupId(@Param("id") Integer id);
+
+
+    //分页获取goodsChannel的数据d
+    @Select("select \n" +
+            "id,\n" +
+            "sequence,\n" +
+            "group_id,\n" +
+            "(select name from tb_channel_group where id = group_id) 'group',\n" +
+            "category_id,\n" +
+            "(select name from tb_goods_category where id = category_id) 'category',\n" +
+            "url\n" +
+            "from tb_goods_channel\n" +
+            "limit #{page} , #{pageSize}")
+    List<Map<String,Object>> findAllChannelByPage(@Param("page") Integer page,@Param("pageSize") Integer pageSize);
+
+    //根据goodsChannelId找goodsChannel
+    @Select("select * from tb_goods_channel where id = #{goodsChannelId}")
+    Map<String,Object> findGoodsChannel(@Param("goodsChannelId") Integer goodsChannelId);
 }
 
 

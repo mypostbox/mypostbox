@@ -88,6 +88,15 @@ public class SpuSpecificationServiceImpl extends ServiceImpl<SpuSpecificationMap
         }
         return null;
     }
+    //获取options的类型
+    @Override
+    public List<SpuSpecification> findAllSpuSpec(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+          return  this.spuSpecificationMapper.selectList(null);
+        }
+        return null;
+    }
 
 }
 

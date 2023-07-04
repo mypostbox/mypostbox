@@ -44,4 +44,20 @@ public class OrderInfoMapperTest {
         Map<String, Object> allOrderUser = this.orderInfoMapper.findAllOrderUser();
         System.out.println(allOrderUser);
     }
+
+    @Test
+    public void test3(){
+        List<Map<String, Object>> allOrderByPage = this.orderInfoMapper.findAllOrderByPage(0, 5, "2019");
+        for(Map<String,Object> map : allOrderByPage){
+            System.out.println(map);
+        }
+    }
+
+    @Test
+    public void test4() throws JsonProcessingException {
+        Map<String, Object> order = this.orderInfoMapper.findOrder("2023062801d573d492124ff3ac40ad7366ca6fe200000001");
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(order);
+        System.out.println(s);
+    }
 }
