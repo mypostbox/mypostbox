@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.syedu.domain.GoodsVisit;
-import com.syedu.domain.Sku;
-import com.syedu.domain.SkuSpecification;
-import com.syedu.domain.Users;
+import com.syedu.domain.*;
 import com.syedu.mapper.GoodsVisitMapper;
 import com.syedu.mapper.SkuSpecificationMapper;
 import com.syedu.service.SkuService;
@@ -17,6 +14,7 @@ import com.syedu.utils.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
 
 import java.security.PublicKey;
@@ -356,6 +354,16 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku>
         }
         return null;
     }
+    //获取所有sku的种类
+    @Override
+    public List<Sku> findAllSkus(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.skuMapper.selectList(null);
+        }
+        return null;
+    }
+
 }
 
 

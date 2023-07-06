@@ -12,6 +12,7 @@
         <module>Meiduo</module>
         <module>meiduo-plus</module>
         <module>has</module>
+        <module>fileUpload</module>
     </modules>
 
     <properties>

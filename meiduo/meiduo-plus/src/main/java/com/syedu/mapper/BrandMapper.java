@@ -21,7 +21,8 @@ public interface BrandMapper extends BaseMapper<Brand> {
     //分页获取brand的数据
     @Select("select id,name,logo,first_letter from tb_brand limit #{page} , #{pageSize}")
     List<Map<String,Object>> findAllBrandByPage(@Param("page") Integer page,@Param("pageSize") Integer pageSize);
-
+    @Select("select name,logo,first_letter from tb_brand where id = #{brandId}")
+    Map<String,Object> findBrand(@Param("brandId") Integer brandId);
 
 }
 

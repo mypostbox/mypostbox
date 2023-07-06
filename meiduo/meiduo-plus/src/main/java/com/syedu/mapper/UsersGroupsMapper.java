@@ -2,6 +2,10 @@ package com.syedu.mapper;
 
 import com.syedu.domain.UsersGroups;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,7 +14,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.syedu.domain.UsersGroups
 */
 public interface UsersGroupsMapper extends BaseMapper<UsersGroups> {
-
+    //根据用户id获取角色id
+    @Select("select group_id from tb_users_groups where user_id = #{userId}")
+    List<Integer> findAllGroupByUserId(@Param("userId") Integer userId);
 }
 
 

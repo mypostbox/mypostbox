@@ -33,6 +33,8 @@ public interface SpuMapper extends BaseMapper<Spu> {
 
     @Select("select * from tb_spu where id = #{id}")
     Spu findSpuById(@Param("id") Integer id);
+    @Select("select * from tb_spu where id = #{spuId}")
+    Map<String,Object> findSpuObjectById(@Param("spuId") Integer spuId);
 }
 
 

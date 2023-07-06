@@ -49,6 +49,43 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu>
         }
         return null;
     }
+    //根据id获取spu信息
+    @Override
+    public Map<String, Object> findSpuById(String token, Integer spuId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.spuMapper.findSpuObjectById(spuId);
+        }
+        return null;
+    }
+    //保存spu
+    @Override
+    public Integer saveSpu(String token, Spu spu) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+           return this.spuMapper.insert(spu);
+        }
+        return null;
+    }
+    //修改spu
+    @Override
+    public Integer updateSpu(String token, Integer spuId, Spu spu) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            spu.setId(spuId);
+            return this.spuMapper.updateById(spu);
+        }
+        return null;
+    }
+    //删除spu
+    @Override
+    public Integer deleteSpu(String token, Integer spuId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.spuMapper.deleteById(spuId);
+        }
+        return null;
+    }
 }
 
 

@@ -43,7 +43,7 @@ public class AdminUserController {
      */
     @PostMapping("users")
     public Users saveUsers3(@RequestHeader("Authorization") String token,
-                             Users user) throws Exception {
+                            @RequestBody Users user) throws Exception {
         return this.usersService.saveUser(token,user);
     }
 

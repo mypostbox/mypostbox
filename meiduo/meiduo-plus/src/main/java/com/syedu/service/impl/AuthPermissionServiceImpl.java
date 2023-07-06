@@ -90,6 +90,16 @@ public class AuthPermissionServiceImpl extends ServiceImpl<AuthPermissionMapper,
         }
         return null;
     }
+
+    //获取所有的权限
+    @Override
+    public List<Map<String, Object>> findAllGroup(String token) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+           return this.authPermissionMapper.findAllGroup();
+        }
+        return null;
+    }
 }
 
 

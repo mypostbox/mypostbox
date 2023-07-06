@@ -6,7 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -14,6 +19,9 @@ import lombok.Data;
  */
 @TableName(value ="tb_sku_image")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
 public class SkuImage implements Serializable {
     /**
      * 

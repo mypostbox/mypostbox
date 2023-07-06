@@ -27,10 +27,11 @@ public class AdminFrontController {
      * @throws Exception
      */
     @PostMapping("authorizations")
-    public Users checkUsers(Users user) throws Exception {
+    public Users checkUsers(@RequestBody Users user) throws Exception {
         return  this.usersService.staffLogin(user);
     }
     /**
+     * 
      * 获取所有用户的数量
      * @return
      */

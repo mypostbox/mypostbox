@@ -3,6 +3,7 @@ package com.syedu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.syedu.domain.GoodsCategory;
 
@@ -64,6 +65,15 @@ public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, G
             LambdaQueryWrapper<GoodsCategory> wrapper = new LambdaQueryWrapper<>();
             wrapper.isNull(GoodsCategory::getParentId);
             return  this.goodsCategoryMapper.selectList(wrapper);
+        }
+        return null;
+    }
+    //根据父级id获取子类
+    @Override
+    public List<GoodsCategory> findGoodsCategoryChild(String token, Integer categoryId) throws Exception {
+        Users user = JwtUtils.getInfoFromToken(token, this.publicKey);
+        if(user.getId() != null){
+            return this.goodsCategoryMapper.selectList(new LambdaQueryWrapper<GoodsCategory>().eq(GoodsCategory::getParentId,categoryId));
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package com.syedu.service;
 
+
 import com.syedu.domain.Sku;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -55,5 +56,9 @@ public interface SkuService extends IService<Sku> {
     Sku updateSku(String token,Integer skuId,Sku sku) throws Exception;
     //删除sku
     Integer deleteSku(String token,Integer skuId) throws Exception;
+
+    //获取所有sku的种类
+    List<Sku> findAllSkus(String token) throws Exception;
+
 
 }

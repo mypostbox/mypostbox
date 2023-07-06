@@ -16,4 +16,15 @@ public interface SpuService extends IService<Spu> {
         List<Spu> findSpu(String token) throws Exception;
         //分页查找spu数据
         Map<String,Object> findAllSpuByPage(String token,Integer page,Integer pageSize) throws Exception;
+
+        //根据id获取spu信息
+        Map<String,Object> findSpuById(String toKen,Integer spuId) throws Exception;
+
+
+        //保存spu
+        Integer saveSpu(String token,Spu spu) throws Exception;
+        //修改spu
+        Integer updateSpu(String token,Integer spuId,Spu spu) throws Exception;
+        //删除spu
+        Integer deleteSpu(String token,Integer spuId) throws Exception;
 }

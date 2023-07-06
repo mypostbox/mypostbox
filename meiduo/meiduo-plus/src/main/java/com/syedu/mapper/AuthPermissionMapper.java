@@ -26,6 +26,13 @@ public interface AuthPermissionMapper extends BaseMapper<AuthPermission> {
             @Result(property = "name" , column = "type")
     })
     List<Map<String,Object>> findAllContentType();
+    //获取所有的权限
+    @Select("select * from auth_permission")
+    List<Map<String,Object>> findAllGroup();
+
+    //根据用户id获取该用户的所有权限(未使用)
+    @Select("select * from auth_permission where id in(select permission_id from tb_users_user_permissions where user_id = #{userId})")
+    List<AuthPermission> findAllAuthPermissionByUserId(@Param("userId") Integer userId);
 }
 
 

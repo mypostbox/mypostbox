@@ -24,4 +24,6 @@ public interface AuthPermissionService extends IService<AuthPermission> {
     Integer updatePermission(String token,Integer permissionId,AuthPermission authPermission) throws Exception;
     //根据id删除权限
     Integer deletePermission(String token,Integer permissionId) throws Exception;
+    //获取所有的权限
+    List<Map<String,Object>> findAllGroup(String token) throws Exception;
 }

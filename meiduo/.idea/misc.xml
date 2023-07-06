@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/fileUpload" />
     <file type="web" url="file://$PROJECT_DIR$/has" />
     <file type="web" url="file://$PROJECT_DIR$/Meiduo" />
     <file type="web" url="file://$PROJECT_DIR$/meiduo-plus" />

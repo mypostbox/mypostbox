@@ -19,9 +19,9 @@ public interface AuthGroupMapper extends BaseMapper<AuthGroup> {
     @Select("select * from auth_group limit #{page} , #{pageSize}")
     List<Map<String,Object>> findAllGroupByPage(@Param("page") Integer page,@Param("pageSize") Integer pageSize);
 
-    //获取（auth_group）的所有数据
-    @Select("select * from auth_group")
-    List<Map<String,Object>> findAllGroup();
+    //根据用户id获取该用户的所有角色(未使用)
+    @Select("select * from auth_group where id in(select group_id from tb_users_groups where user_id = #{userId})")
+    List<AuthGroup> findAllAuthGroupByUserId(@Param("userId") Integer userId);
 }
 
 

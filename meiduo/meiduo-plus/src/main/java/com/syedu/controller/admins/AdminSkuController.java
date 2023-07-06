@@ -5,7 +5,7 @@ import com.syedu.domain.*;
 import com.syedu.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +54,7 @@ public class AdminSkuController {
      */
     @PostMapping("skus")
     Sku saveSku(@RequestHeader("Authorization") String token,
-                Sku sku) throws Exception {
+                @RequestBody Sku sku) throws Exception {
         return this.skuService.saveSkuAndSkuSpecification(token,sku);
     }
     /**
@@ -106,7 +106,7 @@ public class AdminSkuController {
     //添加保存数据SpuSpec
     @PostMapping("goods/specs")
     Integer saveSpuSpec(@RequestHeader("Authorization") String token,
-                        SpuSpecification spuSpecification) throws Exception {
+                        @RequestBody SpuSpecification spuSpecification) throws Exception {
         return this.spuSpecificationService.saveSpuSpec(token, spuSpecification);
     }
     //根据specId修改spec
@@ -155,7 +155,7 @@ public class AdminSkuController {
     //添加保存goodsChannel
     @PostMapping("goods/channels")
     Integer saveGoodsChannel(@RequestHeader("Authorization") String token,
-                             GoodsChannel goodsChannel) throws Exception {
+                             @RequestBody GoodsChannel goodsChannel) throws Exception {
         return this.goodsChannelService.saveGoodsChannel(token, goodsChannel);
     }
     //根据goodsChannelId找goodsChannel
@@ -189,7 +189,7 @@ public class AdminSkuController {
     //添加保存options
     @PostMapping("specs/options")
     Integer saveOption(@RequestHeader("Authorization") String token,
-                       SpecificationOption specificationOption) throws Exception {
+                       @RequestBody SpecificationOption specificationOption) throws Exception {
         return this.specificationOptionService.saveOption(token, specificationOption);
     }
     //根据optionId获取option
@@ -220,6 +220,35 @@ public class AdminSkuController {
                                           @RequestParam("pagesize") Integer pageSize) throws Exception {
         return this.brandService.findAllBrandByPage(token,page,pageSize);
     }
+    //添加品牌
+    @PostMapping("goods/brands")
+    Integer saveBrand(@RequestHeader("Authorization") String token,
+                      @RequestParam("name") String name,
+                      @RequestParam("first_letter") String first_letter,
+                      @RequestParam("logo") MultipartFile logo) throws Exception {
+        return this.brandService.saveBrand(token, name, first_letter, logo);
+    }
+    //获取品牌信息
+    @GetMapping("goods/brands/{brandId}")
+    Map<String,Object> findBrand(@RequestHeader("Authorization") String token,
+                                 @PathVariable("brandId") Integer brandId) throws Exception {
+        return this.brandService.findBrand(token, brandId);
+    }
+    //修改品牌信息
+    @PostMapping("goods/brands/{brandId}")
+    Integer updateBrand(@RequestHeader("Authorization") String token,
+                        @PathVariable("brandId") Integer brandId,
+                        @RequestParam("name") String name,
+                        @RequestParam("first_letter") String first_letter,
+                        @RequestParam("logo") MultipartFile logo) throws Exception {
+        return this.brandService.updateBrand(token, brandId, name, first_letter, logo);
+    }
+    //删除品牌
+    @DeleteMapping("goods/brands/{brandId}")
+    Integer deleteBrand(@RequestHeader("Authorization") String token,
+                        @PathVariable("brandId") Integer brandId) throws Exception {
+        return this.brandService.deleteBrand(token,brandId);
+    }
 
     //图片管理
     @GetMapping("skus/images")
@@ -227,6 +256,38 @@ public class AdminSkuController {
                                        @RequestParam("page") Integer page,
                                        @RequestParam("pagesize") Integer pageSize) throws Exception {
         return this.skuImageService.findAllSkuImageByPage(token,page,pageSize);
+    }
+    //获取所有sku的种类
+    @GetMapping("skus/simple")
+    List<Sku> findAllSku(@RequestHeader("Authorization") String token) throws Exception {
+        return this.skuService.findAllSkus(token);
+    }
+    //保存图片
+    @PostMapping("skus/images")
+    Integer saveImage(@RequestHeader("Authorization") String token,
+                      @RequestParam("sku") Integer skuId,
+                      @RequestParam("image") MultipartFile image) throws Exception {;
+        return this.skuImageService.saveImage(token, skuId, image);
+    }
+    //根据id获取图片详细信息
+    @GetMapping("skus/images/{imagesId}")
+    SkuImage findImage(@RequestHeader("Authorization") String token,
+                                 @PathVariable("imagesId") Integer imagesId) throws Exception {
+        return this.skuImageService.findImage(token, imagesId);
+    }
+    //修改照片
+    @PostMapping("skus/images/{imagesId}")
+    Integer updateImage(@RequestHeader("Authorization") String token,
+                        @PathVariable("imagesId") Integer imagesId,
+                        @RequestParam("sku") Integer sku,
+                        @RequestParam("image") MultipartFile image) throws Exception {
+        return this.skuImageService.updateImage(token, imagesId, sku, image);
+    }
+    //删除照片
+    @DeleteMapping("skus/images/{imagesId}")
+    Integer deleteImage(@RequestHeader("Authorization") String token,
+                        @PathVariable("imagesId") Integer imagesId) throws Exception {
+        return this.skuImageService.deleteImage(token,imagesId);
     }
 
     //SPU管理
@@ -236,6 +297,96 @@ public class AdminSkuController {
                                         @RequestParam("page") Integer page,
                                         @RequestParam("pagesize") Integer pageSize) throws Exception {
         return this.spuService.findAllSpuByPage(token, page, pageSize);
+    }
+    //获取一级商品类型
+    @GetMapping("goods/channel/categories")
+    List<GoodsCategory> findChannelCategories1(@RequestHeader("Authorization") String token) throws Exception {
+        return this.goodsCategoryService.findGoodsCategoryOne(token);
+    }
+    //获取子级商品类型
+    @GetMapping("goods/channel/categories/{categoryId}")
+    List<GoodsCategory> findChannelCategoriesChild(@RequestHeader("Authorization") String token,
+                                                   @PathVariable("categoryId") Integer categoryId) throws Exception {
+        return this.goodsCategoryService.findGoodsCategoryChild(token, categoryId);
+    }
+    //获取品牌的类型
+    @GetMapping("goods/brands/simple")
+    List<Brand> findAllBrand(@RequestHeader("Authorization") String token) throws Exception {
+        return this.brandService.findAllBrand(token);
+    }
+    //根据id获取spu信息
+    @GetMapping("goods/{spuId}")
+    Map<String,Object> findSpu(@RequestHeader("Authorization") String token,
+                               @PathVariable("spuId") Integer spuId) throws Exception {
+        return this.spuService.findSpuById(token,spuId);
+    }
+    //接收照片
+    @PostMapping("goods/images")
+    Map<String,Object> saveImage(@RequestPart MultipartFile image,
+                                 @RequestHeader("Authorization") String token) throws Exception {
+       return this.skuImageService.saveImage(token,image);
+    }
+
+//            System.out.println(image);
+//
+//            String path = "http://localhost:9090/upload/";
+//            String paths = "D:/nginx/nginx-1.18.0/nginx-1.18.0/image";
+
+            //image.transferTo(new File(path,filename));
+//        //跨服务器
+//        String targetURL = "http://localhost:9090/upload/";
+//        URL url = new URL(targetURL);
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        // 设置请求方法为POST
+//        connection.setRequestMethod("POST");
+//        // 允许输入输出流
+//        connection.setDoInput(true);
+//        connection.setDoOutput(true);
+//        // 设置请求头内容（根据需要进行适当设置）
+//        connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---BOUNDARY");
+//        DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
+//        dataOutputStream.write(image.getBytes());
+//        // 关闭流
+//        dataOutputStream.flush();
+//        dataOutputStream.close();
+//        // 获取响应码
+//        int responseCode = connection.getResponseCode();
+//        if (responseCode == HttpURLConnection.HTTP_OK) {
+//            // 文件上传成功
+//            System.out.println("File uploaded successfully.");
+//        } else {
+//            // 文件上传失败
+//            System.out.println("File upload failed. Response Code: " + responseCode);
+//        }
+
+        // C:\Users\Administrator\Desktop\美多\meiduo_admin\static\images
+        //String uploadPath = request.getSession().getServletContext().getRealPath("img");
+        // image.transferTo(new File(uploadPath,filename));
+
+//        String filename = image.getOriginalFilename();
+//        filename = UUID.randomUUID().toString().replace("-","") + filename ;
+//
+//        Client client = Client.create();
+//        WebResource resource = client.resource(path + filename);
+//        resource.post(image.getBytes());
+    //保存spu
+    @PostMapping("goods")
+    Integer saveSpu(@RequestHeader("Authorization") String token,
+                    @RequestBody Spu spu) throws Exception {
+        return this.spuService.saveSpu(token, spu);
+    }
+    //修改spu
+    @PutMapping("goods/{spuId}")
+    Integer updateSpu(@RequestHeader("Authorization") String token,
+                      @PathVariable("spuId") Integer spuId,
+                      @RequestBody Spu spu) throws Exception {
+        return this.spuService.updateSpu(token, spuId, spu);
+    }
+    //删除spu
+    @DeleteMapping("goods/{spuId}")
+    Integer deleteSpu(@RequestHeader("Authorization") String token,
+                      @PathVariable("spuId") Integer spuId) throws Exception {
+        return this.spuService.deleteSpu(token, spuId);
     }
 
 }

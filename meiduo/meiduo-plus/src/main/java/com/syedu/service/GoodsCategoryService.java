@@ -28,4 +28,7 @@ public interface GoodsCategoryService extends IService<GoodsCategory> {
     List<GoodsCategory> findGoodsCategory(String token) throws Exception;
     //获取一级goodsCategory
     List<GoodsCategory> findGoodsCategoryOne(String token) throws Exception;
+
+    //根据父级id获取子类
+    List<GoodsCategory> findGoodsCategoryChild(String token,Integer categoryId) throws Exception;
 }
